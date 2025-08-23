@@ -100,7 +100,6 @@
 |--------------|---------------------------------------|---------------------|-------------------------------------
 | setup.sh     | -                                     | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
 | gpx2poi.py   | my\_route.gpx                         | my\_route.geojson   | collects selected POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2kml.py   | my\_route.gpx,<br>my\_route.geojson   | my\_route.kml       | check results by importing KML-file to Google MyMaps; includes original route plus POIs alongside
 | poi2tcx.py   | my\_route.gpx,<br>my\_route.geojson   | my\_route.tcx       | converts _planned_ ride GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
 | poi2sql.py   | TODO                                  | TODO                | TODO updates a local BoltApp SQLite database file 
   
