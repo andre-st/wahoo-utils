@@ -14,29 +14,43 @@ POI_FILE = "my_route.geojson"
 TCX_FILE = "my_route.tcx"
 
 
-FOOD_AMENITIES  = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
-WATER_AMENITIES = { "drinking_water", "shelter", "toilets", "water_point" }
+FOOD_AMENITIES   = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
+WATER_AMENITIES  = { "drinking_water", "toilets", "water_point" }
+DANGER_AMENITIES = {}
+
+
+
+def cue_title( props ):
+	name    = props.get( "name"    ) or ""
+	amenity = props.get( "amenity" ) or "POI"
+	amenity = amenity.replace( '_', ' ' )       # "fast_food" -> "fast food"
+	amenity = amenity[0].upper() + amenity[1:]  # "toilets"   -> "Toilets" 
+	title   = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
+	title   = title.rstrip();
+	return title
 
 
 
 def map_point_type( props ):
 	amenity = (props.get( "amenity" ) or "").lower()
 	landuse = (props.get( "landuse" ) or "").lower()
-	if	amenity in FOOD_AMENITIES:
+	if amenity in FOOD_AMENITIES:
 		return "Food"
-	elif	amenity in WATER_AMENITIES or landuse == "cemetery":
+	elif amenity in WATER_AMENITIES or landuse == "cemetery":
 		return "Water"
+	elif amenity in DANGER_AMENITIES:
+		return "Danger"
 	else:
 		return "Generic"
 
 
 
-def gpx_geojson_to_tcx( gpx_file, geojson_file, tcx_file ):
+def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 	
 	with open( gpx_file, 'r' ) as f:
 		gpx = gpxpy.parse(f)
 	
-	with open( geojson_file, 'r' ) as f:
+	with open( poi_file, 'r' ) as f:
 		geojson = json.load( f )
 	
 	ns  = "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
@@ -68,7 +82,7 @@ def gpx_geojson_to_tcx( gpx_file, geojson_file, tcx_file ):
 			props    = feature.get( "properties", {} )
 			
 			cp = ET.SubElement( course, "CoursePoint" )
-			ET.SubElement( cp, "Name"      ).text = props.get( "name" ) or "Cue"
+			ET.SubElement( cp, "Name"      ).text = cue_title( props )
 			ET.SubElement( cp, "PointType" ).text = map_point_type( props )
 			
 			pos = ET.SubElement( cp, "Position" )
