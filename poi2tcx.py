@@ -2,6 +2,9 @@
 
 # Minimal GPX->TCX converter for _planned_ rides from Komoot (does not convert heart rate, cadence etc. data)
 # Adds POIs as CUEs
+#
+# TCX-Schema: https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd
+
 
 
 import gpxpy
@@ -14,9 +17,10 @@ POI_FILE = "my_route.geojson"
 TCX_FILE = "my_route.tcx"
 
 
-FOOD_AMENITIES   = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
-WATER_AMENITIES  = { "drinking_water", "toilets", "water_point" }
-DANGER_AMENITIES = {}
+FOOD_AMENITIES     = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
+WATER_AMENITIES    = { "drinking_water", "toilets", "water_point" }
+DANGER_AMENITIES   = {}
+FIRSTAID_AMENITIES = {}
 
 
 
@@ -40,6 +44,8 @@ def map_point_type( props ):
 		return "Water"
 	elif amenity in DANGER_AMENITIES:
 		return "Danger"
+	elif amenity in FIRSTAID_AMENITIES:
+		return "First Aid"
 	else:
 		return "Generic"
 
