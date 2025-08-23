@@ -12,7 +12,7 @@ import time
 
 SEGMENT_POI_RADIUS   = 0.001  # 0.001 = 100m
 GPX_FILE             = "my_route.gpx"
-POI_FILE             = "my_route_pois.json"
+POI_FILE             = "my_route.geojson"
 POI_TAGS             = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
 WORKERS_COUNT        = 2
 WORKERS_DELAY_SECS   = 0.0

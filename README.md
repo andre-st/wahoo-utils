@@ -4,11 +4,11 @@
 ## Disclaimer
 
 1. Programs and information offered here are not official from Wahoo, but purely a private project
-2. Use this project at your own risk.
-	Following these instructions may damage your device or cause unexpected issues.
-	Do **not** blindly follow instructions from the internet without understanding them — including this one.  
-	You are solely responsible for what you do.
-3. Programs here are all still in their early stages, 
+2. Use this project at your own risk. You are solely responsible for what you do. Following these instructions may
+	- void your warranty
+	- damage your device
+	- cause unexpected issues
+4. Programs here are all still in their early stages, 
 	not tested everywhere, not particularly optimized or fault-tolerant, 
 	not translated into English at all points.
 
@@ -25,7 +25,7 @@
 ## Basics
 
 - Bolt runs an old Android operating system which is accessible via USB-Cable and the Android Debug Bridge (ADB) tool
-- there is [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when you are unable to install ADB for some reason 
+- consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install ADB for some reason 
 	(though some security/privacy risk)
 - Bolt authorizes ADB in debug mode:
 	1. power up without USB-Cable plugged in, 
@@ -34,7 +34,9 @@
 	4. plug in cable
 	5. I had to try this 20+ times until this "official" method finally worked; 
 		I also pressed UP+DOWN during Bolt's "warm up" phase when it worked
-- Bolt supports file formats: FIT (newer Garmin binary with smaller filesize), TCX (older Garmin plaintext) and GPX (plaintext)
+- Bolt supports file formats: FIT (newer Garmin binary with smaller filesize), 
+	[TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older Garmin plaintext) 
+	and GPX (plaintext)
 
 
 
@@ -59,7 +61,7 @@
 - self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
-- custom CUE hints in FIT or [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (not GPX) files will give a text warning when approaching the point + water tap icon
+- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon
 	- RwGPS premium feature? $$$
 	- ```xml
 		<CoursePoint> 
@@ -78,7 +80,9 @@
 ### Manually adding POIs is cumbersome
 
 - here, I try CUEs and BoltApp DB editing but automate finding POIs along our route via OpenStreetMap (OSM)
-- CUEs are aligned and contained with track but uploading new or changed tracks to the bike computer is more complicated now
+- CUEs are aligned and contained with a track but uploading new or changed tracks to the bike computer is more complicated now; 
+	perhaps we can automatically replace existing files on the Bolt with extended versions?  
+	How avoid:
 	1. export from track editor, e.g. Komoot
 	2. create new track by running tools in this repo against your track
 	3. upload new track to smartphone
@@ -92,13 +96,13 @@
 
 ### Tools in this repo
 
-| Filename     | Input                                             | Output             | Comments
-|--------------|---------------------------------------------------|--------------------|-------------------------------------
-| setup.sh     | -                                                 | /myenv             | installs deps into project-dir, so nothing left on your system after deletion
-| gpx2poi.py   | my\_route.gpx file, e.g. from Komoot              | my\_route.json     | collects selected POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2kml.py   | my\_route.gpx,<br>my\_route.json from gpx2poi.py  | my\_route.kml      | check results by importing KML-file to Google MyMaps; includes original route plus POIs alongside
-| poi2cue.py   | TODO                                              | my\_route.tcx      | TODO
-
+| Executable   | Input files                           | Output files        | Comment
+|--------------|---------------------------------------|---------------------|-------------------------------------
+| setup.sh     | -                                     | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
+| gpx2poi.py   | my\_route.gpx                         | my\_route.geojson   | collects selected POIs via OpenStreetMap within 100 meter radius along the given route
+| poi2kml.py   | my\_route.gpx,<br>my\_route.geojson   | my\_route.kml       | check results by importing KML-file to Google MyMaps; includes original route plus POIs alongside
+| poi2tcx.py   | my\_route.gpx,<br>my\_route.geojson   | my\_route.tcx       | converts _planned_ ride GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
+| poi2sql.py   | TODO                                  | TODO                | TODO updates a local BoltApp SQLite database file 
   
   
 

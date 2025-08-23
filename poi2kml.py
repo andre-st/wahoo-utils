@@ -9,9 +9,11 @@ import geopandas as gpd
 import simplekml
 from   shapely.geometry import LineString
 
+
 GPX_FILE = "my_route.gpx"
-POI_FILE = "my_route_pois.json"
+POI_FILE = "my_route.geojson"
 KML_FILE = "my_route.kml"
+
 
 with open( GPX_FILE, "r" ) as f:
 	gpx = gpxpy.parse( f )
