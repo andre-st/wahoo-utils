@@ -58,6 +58,7 @@
 	- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
 	- DB-table: `CloudPoiDao`
 	- https://www.youtube.com/watch?v=Sl--gcJ95XM
+	- is independent of individual tracks, does not align with changed tracks; perhaps good for wider coverage of an area
 - self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
@@ -79,11 +80,14 @@
 
 ### Automate finding POIs along the route
 
+Manually adding POIs is too cumbersome.
+OSM servers allow querying features within a bounding box. 
+So we construct several bounding boxes from all the route points in a GPX file and query features for every box.
+Filters here, deduplication there, retrieved POIs are finally written to a TCX file as a list of CoursePoints.
+
 ![Algorithm terms](./gpx2poi.svg)
 
-- this project adds CUEs and/or edits the BoltApp SQLite database with POIs along our route found via OpenStreetMap (OSM); 
-	manually adding POIs is too cumbersome
-- CUEs are aligned and contained with a track but uploading new or changed tracks to the bike computer is more complicated now; 
+These are aligned and contained with a track file but uploading new or changed tracks to the bike computer is more complicated now; 
 	perhaps we can automatically replace existing files on the Bolt with extended versions?  
 	How avoid:
 	1. export from track editor, e.g. Komoot
@@ -92,8 +96,6 @@
 	4. import new track via companion app
 	5. sync Bolt and app
 	6. avoid confusing new and old tracks if autosynced with Komoot
-- DB is independent of tracks (you can sync tracks with Komoot) or - negatively - not aligned with changed tracks, and requires separate cleaning/updating
-	- good for covering a wider region (shelters?) but not a track
 
 
 
