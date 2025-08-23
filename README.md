@@ -3,11 +3,12 @@
 
 ## Disclaimer
 
-1. Use this project at your own risk.
+1. Programs and information offered here are not official from Wahoo, but purely a private project
+2. Use this project at your own risk.
 	Following these instructions may damage your device or cause unexpected issues.
 	Do **not** blindly follow instructions from the internet without understanding them — including this one.  
 	You are solely responsible for what you do.
-2. Programs here are all still in their early stages, 
+3. Programs here are all still in their early stages, 
 	not tested everywhere, not particularly optimized or fault-tolerant, 
 	not translated into English at all points.
 
@@ -26,13 +27,13 @@
 
 
 
-## Point of Interests (POI)
+## Points of Interest (POI)
 
 ### Motivation
 
 - distance cycling / bikepacking
 - requires food, drinking water (cemetery), toilets, shelter (= POI types) along the route
-- cyclist might miss nearby POIS, either planned or non-planned
+- cyclist might miss nearby POIs, either planned or non-planned
 
 
 ### What's there?
