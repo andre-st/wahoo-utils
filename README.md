@@ -15,8 +15,9 @@
 
 ## Basics
 
-- Bolt runs an old Android operating system and is accessible via ADB over USB cable
-- there is app.webadb.com via Chrome and WebUSB when you are unable to install adb for some reason (some securtiy/privacy risk though)
+- Bolt runs an old Android operating system which is accessible via USB-Cable and the Android Debug Bridge (ADB) tool
+- there is [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when you are unable to install ADB for some reason 
+	(though some security/privacy risk)
 - Bolt authorizes ADB in debug mode:
 	1. power up without USB-Cable plugged in, 
 	2. press POWER+UP+DOWN simultan.
@@ -36,7 +37,7 @@
 - cyclist might miss nearby POIs, either planned or non-planned
 
 
-### What's there?
+### What is possible with the Bolt?
 
 - native function on the device: "Save my location" = no manual coordinates
 - adding POIs manually via smartphone companion app = pain
@@ -59,12 +60,13 @@
 		```
 - replace with expensive Garmin device
 - adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types, all heart-icon only
-	- DB-file: `/data/data/com.wahoofitnes.bolt/databases/BoltApp.sqlite`
+	- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
 	- DB-table: `CloudPoiDao`
 	- https://www.youtube.com/watch?v=Sl--gcJ95XM
-
-
-Here, I try CUEs and BoltApp DB editing **but automate finding POIs along our route** via OpenStreetMap (OSM).
+  
+  
+**Manually adding POIs is cumbersome**:  
+Here, I try CUEs and BoltApp DB editing but automate finding POIs along our route via OpenStreetMap (OSM).
   
   
 
