@@ -47,10 +47,9 @@
 - distance cycling / bikepacking
 - requires food, drinking water (cemetery), toilets, shelter (= POI types) along the route
 - cyclist might miss nearby POIs, either planned or non-planned
-- Bolt v2 POI support is very basic
 
 
-### What is possible with the Bolt v2?
+### Bolt v2 POI support is very basic
 
 - native function on the device: "Save my location" = no manual coordinates
 - adding POIs manually via smartphone companion app = pain
@@ -77,9 +76,10 @@
 		```
 
 
-### Manually adding POIs is cumbersome
+### Automate finding POIs along the route
 
-- here, I try CUEs and BoltApp DB editing but automate finding POIs along our route via OpenStreetMap (OSM)
+- this project uses CUEs and BoltApp DB editing but automates finding POIs along our route via OpenStreetMap (OSM); 
+	manually adding POIs is too cumbersome
 - CUEs are aligned and contained with a track but uploading new or changed tracks to the bike computer is more complicated now; 
 	perhaps we can automatically replace existing files on the Bolt with extended versions?  
 	How avoid:
@@ -94,7 +94,7 @@
 
 
 
-### Tools in this repo
+### Tools in this repository
 
 | Executable   | Input files                           | Output files        | Comment
 |--------------|---------------------------------------|---------------------|-------------------------------------
