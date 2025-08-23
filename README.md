@@ -7,11 +7,9 @@
 	Following these instructions may damage your device or cause unexpected issues.
 	Do **not** blindly follow instructions from the internet without understanding them — including this one.  
 	You are solely responsible for what you do.
-2. The programs here are all still in their early stages, 
-	fulfill my purpose (playground), 
-	but are not necessarily comfortable for everyone 
-	or tested everywhere, particularly optimized or fault-tolerant, 
-	or translated into English at all points.
+2. Programs here are all still in their early stages, 
+	not tested everywhere, not particularly optimized or fault-tolerant, 
+	not translated into English at all points.
 
 
 ## Basics
@@ -52,10 +50,11 @@
 		</CoursePoint>
 		```
 - replace with a more expensive Garmin device
-- adding POIs manually by editing the BoltApp database via ADB and a SQLite client
+- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types, all heart-icon only
 	- https://www.youtube.com/watch?v=Sl--gcJ95XM
-	- **we will try this approach but automate finding POIs along our route**
 
+
+Here, I try CUEs and BoltApp DB editing but automate finding POIs along our route.
 
 
 ### Tools in this repo
