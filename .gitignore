@@ -1,0 +1,10 @@
+*~
+*.bak
+*.tmp
+*.swp
+*.mkv
+BoltApp.sqlite
+myenv
+cache
+.obsolete
+
