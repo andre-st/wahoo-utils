@@ -4,11 +4,11 @@
 ## Disclaimer
 
 1. Programs and information offered here are not official from Wahoo, but purely a private project
-2. Use this project at your own risk. You are solely responsible for what you do. Following these instructions may
+2. Use this project at your own risk. Following these instructions may
 	- void your warranty
 	- damage your device
 	- cause unexpected issues
-4. Programs here are all still in their early stages, 
+4. Programs here are all in their early stages, 
 	not tested everywhere, not particularly optimized or fault-tolerant, 
 	not translated into English at all points.
 
@@ -24,19 +24,20 @@
 
 ## Basics
 
-- Bolt runs an old Android operating system which is accessible via USB-Cable and the Android Debug Bridge (ADB) tool
+- Bolt runs an old Android operating system which is accessible via USB-Cable and the _Android Debug Bridge_ (ADB) tool
 - consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install ADB for some reason 
 	(though some security/privacy risk)
 - Bolt authorizes ADB in debug mode:
 	1. power up without USB-Cable plugged in, 
-	2. press POWER+UP+DOWN simultan.
+	2. press POWER+UP+DOWN simultan. (1 or 2 times)
 	3. white Bolt LED flashes for a second if successfully
 	4. plug in cable
-	5. I had to try this 20+ times until this "official" method finally worked; 
+	5. I had to retry this several times until this "common" method finally worked; 
 		I also pressed UP+DOWN during Bolt's "warm up" phase when it worked
-- Bolt supports file formats: FIT (newer Garmin binary with smaller filesize), 
-	[TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older Garmin plaintext) 
-	and GPX (plaintext)
+- Bolt supports file formats: 
+	- FIT (newer Garmin binary with smaller filesize)
+	- [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older Garmin plaintext)
+	- GPX (plaintext)
 
 
 
@@ -49,7 +50,7 @@
 - cyclist might miss nearby POIs, either planned or non-planned
 
 
-### Bolt v2 POI support is very basic
+### v2-Bolt's POI support is very basic
 
 - native function on the device: "Save my location" = no manual coordinates
 - adding POIs manually via smartphone companion app = pain
@@ -78,7 +79,9 @@
 
 ### Automate finding POIs along the route
 
-- this project uses CUEs and BoltApp DB editing but automates finding POIs along our route via OpenStreetMap (OSM); 
+![Algorithm terms](./gpx2poi.svg)
+
+- this project adds CUEs and/or edits the BoltApp SQLite database with POIs along our route found via OpenStreetMap (OSM); 
 	manually adding POIs is too cumbersome
 - CUEs are aligned and contained with a track but uploading new or changed tracks to the bike computer is more complicated now; 
 	perhaps we can automatically replace existing files on the Bolt with extended versions?  
@@ -96,12 +99,12 @@
 
 ### Tools in this repository
 
-| Executable   | Input files                           | Output files        | Comment
-|--------------|---------------------------------------|---------------------|-------------------------------------
-| setup.sh     | -                                     | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
-| gpx2poi.py   | my\_route.gpx                         | my\_route.geojson   | collects selected POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2tcx.py   | my\_route.gpx,<br>my\_route.geojson   | my\_route.tcx       | converts _planned_ ride GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
-| poi2sql.py   | TODO                                  | TODO                | TODO updates a local BoltApp SQLite database file 
+| Executable   | Input files                         | Output files        | Comment
+|--------------|-------------------------------------|---------------------|-------------------------------------
+| setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
+| gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
+| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned_ ride GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
+| poi2sql.py   | TODO                                | TODO                | TODO updates a local BoltApp SQLite database file 
   
   
 

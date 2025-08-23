@@ -19,6 +19,7 @@ WORKERS_DELAY_SECS   = 0.0
 WORKERS_TIMEOUT_SECS = 10
 
 
+
 def query_osm_pois( buffer ):
 	try:
 		time.sleep( WORKERS_DELAY_SECS )
@@ -47,7 +48,6 @@ def main():
 	
 	all_pois = []
 	
-	
 	with ThreadPoolExecutor( max_workers=WORKERS_COUNT ) as executor:
 		futures = []
 		points  = [(p.longitude, p.latitude) for t in gpx.tracks for s in t.segments for p in s.points]
@@ -65,11 +65,7 @@ def main():
 			if not buf_pois.empty:
 				all_pois.append( buf_pois )  # Zusammenfuehren
 	
-	
 	if all_pois:
-		
-		
-		
 		gdf_all = pd.concat( all_pois )   # GeoDataFrame
 		gdf_all = gdf_all.drop_duplicates()
 		gdf_all.to_file( POI_FILE, driver="GeoJSON" )
