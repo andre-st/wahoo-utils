@@ -13,6 +13,15 @@
 	not translated into English at all points.
 
 
+
+## Overview
+
+- [Basics](#basics)
+- [Points of Interest (POI)](#points-of-interest-poi)
+- [Screen Recording](#screen-recording)
+
+
+
 ## Basics
 
 - Bolt runs an old Android operating system which is accessible via USB-Cable and the Android Debug Bridge (ADB) tool
@@ -25,6 +34,7 @@
 	4. plug in cable
 	5. I had to try this 20+ times until this "official" method finally worked; 
 		I also pressed UP+DOWN during Bolt's "warm up" phase when it worked
+- Bolt supports file formats: FIT (newer Garmin binary with smaller filesize), TCX (older Garmin plaintext) and GPX (plaintext)
 
 
 
@@ -35,16 +45,21 @@
 - distance cycling / bikepacking
 - requires food, drinking water (cemetery), toilets, shelter (= POI types) along the route
 - cyclist might miss nearby POIs, either planned or non-planned
+- Bolt v2 POI support is very basic
 
 
-### What is possible with the Bolt?
+### What is possible with the Bolt v2?
 
 - native function on the device: "Save my location" = no manual coordinates
 - adding POIs manually via smartphone companion app = pain
-- self generated maps with POI-symbols = best approach but nasty setup and regular (re-)generation needs lot of time
+- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types (heart-icon only) and might not scale well
+	- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
+	- DB-table: `CloudPoiDao`
+	- https://www.youtube.com/watch?v=Sl--gcJ95XM
+- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
-- custom CUE hints in TCX (not GPX) files will give a text warning when approaching the point + water tap icon
+- custom CUE hints in FIT or [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (not GPX) files will give a text warning when approaching the point + water tap icon
 	- RwGPS premium feature? $$$
 	- ```xml
 		<CoursePoint> 
@@ -58,17 +73,21 @@
 			<Notes>Water!</Notes> 
 		</CoursePoint>
 		```
-- replace with expensive Garmin device
-- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types, all heart-icon only
-	- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
-	- DB-table: `CloudPoiDao`
-	- https://www.youtube.com/watch?v=Sl--gcJ95XM
-  
-  
-**Manually adding POIs is cumbersome**:  
-Here, I try CUEs and BoltApp DB editing but automate finding POIs along our route via OpenStreetMap (OSM).
-  
-  
+
+
+### Manually adding POIs is cumbersome
+
+- here, I try CUEs and BoltApp DB editing but automate finding POIs along our route via OpenStreetMap (OSM)
+- CUEs are aligned and contained with track but uploading new or changed tracks to the bike computer is more complicated now
+	1. export from track editor, e.g. Komoot
+	2. create new track by running tools in this repo against your track
+	3. upload new track to smartphone
+	4. import new track via companion app
+	5. sync Bolt and app
+	6. avoid confusing new and old tracks if autosynced with Komoot
+- DB is independent of tracks (you can sync tracks with Komoot) or - negatively - not aligned with changed tracks, and requires separate cleaning/updating
+	- good for covering a wider region (shelters?) but not a track
+
 
 
 ### Tools in this repo
