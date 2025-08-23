@@ -28,6 +28,13 @@
 
 ## Point of Interests (POI)
 
+### Motivation
+
+- distance cycling / bikepacking
+- requires food, drinking water (cemetery), toilets, shelter (= POI types) along the route
+- cyclist might miss nearby POIS, either planned or non-planned
+
+
 ### What's there?
 
 - native function on the device: "Save my location" = no manual coordinates
@@ -49,23 +56,29 @@
 			<Notes>Water!</Notes> 
 		</CoursePoint>
 		```
-- replace with a more expensive Garmin device
+- replace with expensive Garmin device
 - adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types, all heart-icon only
+	- DB-file: `/data/data/com.wahoofitnes.bolt/databases/BoltApp.sqlite`
+	- DB-table: `CloudPoiDao`
 	- https://www.youtube.com/watch?v=Sl--gcJ95XM
 
 
-Here, I try CUEs and BoltApp DB editing but automate finding POIs along our route.
+Here, I try CUEs and BoltApp DB editing **but automate finding POIs along our route** via OpenStreetMap (OSM).
+  
+  
 
 
 ### Tools in this repo
 
 | Filename     | Input                                             | Output             | Comments
 |--------------|---------------------------------------------------|--------------------|-------------------------------------
-| setup.sh     | -                                                 | /myenv             | installs deps into project dir, so nothing left on your sys after deletion
-| gpx2poi.py   | my\_route.gpx file, e.g. from Komoot              | my\_route.json     | collects food/drinking water/toilets/shelter POIs via OpenStreetMap within 100 meter radius along the route
-| poi2kml.py   | my\_route.gpx,<br>my\_route.json from gpx2poi.py  | my\_route.kml      | I import the KML-file to Google My Maps to check results, it includes the original route plus POIs alongside
+| setup.sh     | -                                                 | /myenv             | installs deps into project-dir, so nothing left on your system after deletion
+| gpx2poi.py   | my\_route.gpx file, e.g. from Komoot              | my\_route.json     | collects selected POIs via OpenStreetMap within 100 meter radius along the given route
+| poi2kml.py   | my\_route.gpx,<br>my\_route.json from gpx2poi.py  | my\_route.kml      | check results by importing KML-file to Google MyMaps; includes original route plus POIs alongside
 | poi2cue.py   | TODO                                              | my\_route.tcx      | TODO
 
+  
+  
 
 
 ## Screen Recording
