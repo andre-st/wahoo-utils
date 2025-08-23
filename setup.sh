@@ -9,6 +9,8 @@ source myenv/bin/activate
 
 pip install gpxpy geopandas shapely osmnx simplekml tqdm
 
+chmod +x *.py *.sh
+
 popd > /dev/null || exit 1
 
 
