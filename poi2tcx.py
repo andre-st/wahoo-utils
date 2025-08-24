@@ -1,26 +1,28 @@
 #!/usr/bin/env ./myenv/bin/python
 
-# Minimal GPX->TCX converter for _planned_ rides from Komoot (does not convert heart rate, cadence etc. data)
-# Adds POIs as CUEs
-#
-# TCX-Schema: https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd
+# Anmerkungen:
+# - TCX-Schema: https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd
 
 
-
-import gpxpy
+# Standard:
+import argparse
+from   argparse import RawTextHelpFormatter
 import json
+import os
+
+# Drittanbieter:
+import gpxpy
 from lxml import etree as ET
 
-
-GPX_FILE = "my_route.gpx"
-POI_FILE = "my_route.geojson"
-TCX_FILE = "my_route.tcx"
+# Eigene:
 
 
-FOOD_AMENITIES     = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
-WATER_AMENITIES    = { "drinking_water", "toilets", "water_point" }
-DANGER_AMENITIES   = {}
-FIRSTAID_AMENITIES = {}
+
+# Feste Programmkonfiguration:
+AMENITIES_FOOD     = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
+AMENITIES_WATER    = { "drinking_water", "toilets", "water_point" }
+AMENITIES_DANGER   = {}
+AMENITIES_FIRSTAID = {}
 
 
 
@@ -38,13 +40,13 @@ def cue_title( props ):
 def map_point_type( props ):
 	amenity = (props.get( "amenity" ) or "").lower()
 	landuse = (props.get( "landuse" ) or "").lower()
-	if amenity in FOOD_AMENITIES:
+	if amenity in AMENITIES_FOOD:
 		return "Food"
-	elif amenity in WATER_AMENITIES or landuse == "cemetery":
+	elif amenity in AMENITIES_WATER or landuse == "cemetery":
 		return "Water"
-	elif amenity in DANGER_AMENITIES:
+	elif amenity in AMENITIES_DANGER:
 		return "Danger"
-	elif amenity in FIRSTAID_AMENITIES:
+	elif amenity in AMENITIES_FIRSTAID:
 		return "First Aid"
 	else:
 		return "Generic"
@@ -54,7 +56,7 @@ def map_point_type( props ):
 def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 	
 	with open( gpx_file, 'r' ) as f:
-		gpx = gpxpy.parse(f)
+		gpx = gpxpy.parse( f )
 	
 	with open( poi_file, 'r' ) as f:
 		geojson = json.load( f )
@@ -67,7 +69,6 @@ def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 	course  = ET.SubElement( courses, "Course"  )
 	ET.SubElement( course, "Name" ).text = "Komoot Route"
 	
-	
 	# Trackpoints:
 	track_elem = ET.SubElement( course, "Track" )
 	for track in gpx.tracks:
@@ -79,7 +80,6 @@ def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 				ET.SubElement( pos, "LongitudeDegrees" ).text = str( point.longitude )
 				if point.elevation is not None:
 					ET.SubElement( tp, "AltitudeMeters" ).text = str( point.elevation )
-	
 	
 	# Cue Sheet:
 	for feature in geojson.get( "features", [] ):
@@ -106,7 +106,38 @@ def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 
 
 
-gpx_geojson_to_tcx( GPX_FILE, POI_FILE, TCX_FILE )
+def get_user_config():
+	parser = argparse.ArgumentParser(
+		description = (
+			"Creates a Wahoo-compatible Garmin TCX track file from a GPX and POIs-GeoJSON file.\n"
+			"This converter is limited to _planned_ rides from Komoot (does not convert heart rate, cadence etc. data)\n\n"
+			"Author: https://github.com/andre-st/wahoo/" 
+		),
+		epilog          = "License: ?",
+		formatter_class = RawTextHelpFormatter
+	)
+	parser.add_argument( "gpx_file",         help = "load route from the given GPX file path", type = str )
+	parser.add_argument( "-p", "--poi-file", help = "load POIs from the given GeoJSON file path (default is your GPX-file path with .geojson extension)", type = str )
+	parser.add_argument( "-o", "--tcx-file", help = "save to the given file path (default is your GPX-file path with .tcx extension)", type = str )
+	
+	args      = parser.parse_args()
+	base, ext = os.path.splitext( args.gpx_file )
+	
+	if args.poi_file is None:
+		args.poi_file = base + ".geojson"
+	
+	if args.tcx_file is None:
+		args.tcx_file = base + ".tcx"
+	
+	return args
 
 
 
+def main():
+	args = get_user_config()
+	gpx_geojson_to_tcx( args.gpx_file, args.poi_file, args.tcx_file )
+
+
+
+if __name__ == "__main__":
+	main()
