@@ -7,7 +7,9 @@ python -m venv myenv
 
 source myenv/bin/activate
 
-pip install gpxpy geopandas shapely osmnx tqdm lxml
+# shapely <- geopandas
+# pandas  <- geopandas
+pip install geopandas gpxpy lxml osmnx tqdm 
 
 chmod +x *.py *.sh
 
