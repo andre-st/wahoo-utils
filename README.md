@@ -1,9 +1,9 @@
-# Making the Wahoo ELEMNT Bolt v2 more useful
+# Bike Computers Playground: Wahoo Elemnt Bolt, Garmin TCX
 
 
 ## Disclaimer
 
-1. Programs and information offered here are not official from Wahoo, but purely a private project
+1. Programs and information offered here are not official from Wahoo or Garmin, but purely a private project
 2. Use this project at your own risk. Following these instructions may
 	- void your warranty
 	- damage your device
@@ -16,13 +16,13 @@
 
 ## Overview
 
-- [Basics](#basics)
+- [Wahoo Basics](#wahoo-basics)
 - [Points of Interest (POI)](#points-of-interest-poi)
 - [Screen Recording](#screen-recording)
 
 
 
-## Basics
+## Wahoo Basics
 
 - Bolt runs an old Android operating system which is accessible via USB-Cable and the _Android Debug Bridge_ (ADB) tool
 - consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install ADB for some reason 
@@ -79,24 +79,26 @@
 		```
 
 
+
 ### Automate finding POIs along the route
 
-Manually adding POIs is too cumbersome.
-OSM servers allow querying features within a bounding box. 
-So we construct several size-optimized bounding boxes from all the route points in a GPX file and query features for every box.
-Filters here, deduplication there, retrieved POIs are finally written to a TCX file as a list of CoursePoints.
+Manually adding points of interest is a pain in the for longer rides.
+OpenStreetMap servers allow querying features within a bounding box (Overpass API).
+So we construct several size-optimized boxes from all the route points in a GPX file and query POIs for every box.
+Filtered and deduplicatated, all retrieved POIs are finally written to a TCX file as a list of CoursePoints, 
+in addition to the original route of course.
 
 ![Algorithm terms](./gpx2poi.svg)
 
-These are aligned and contained with a track file but uploading new or changed tracks to the bike computer is more complicated now; 
-	perhaps we can automatically replace existing files on the Bolt with extended versions?  
-	How avoid:
+Uploading new or changed tracks to the bike computer is more complicated now, though:  
 	1. export from track editor, e.g. Komoot
 	2. create new track by running tools in this repo against your track
 	3. upload new track to smartphone
 	4. import new track via companion app
 	5. sync Bolt and app
 	6. avoid confusing new and old tracks if autosynced with Komoot
+
+Perhaps we can automatically replace existing files on the Bolt with extended versions?  
 
 
 
@@ -106,7 +108,7 @@ These are aligned and contained with a track file but uploading new or changed t
 |--------------|-------------------------------------|---------------------|-------------------------------------
 | setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
 | gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned ride_ GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
+| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned ride_ GPX file to a TCX with POIs added as CUEs (basic converter); test with [gpsvisualizer.com](https://www.gpsvisualizer.com/)
 | poi2sql.py   | TODO                                | TODO                | TODO updates a local BoltApp SQLite database file 
   
   
