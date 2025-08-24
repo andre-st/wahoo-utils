@@ -7,7 +7,7 @@
 
 # Standard:
 import argparse
-from argparse import RawTextHelpFormatter
+from   argparse import RawTextHelpFormatter
 import os
 import time
 
@@ -15,16 +15,16 @@ import time
 import geopandas as gpd
 import gpxpy
 import osmnx as ox
-from osmnx._errors import InsufficientResponseError
+from   osmnx._errors import InsufficientResponseError
 import pandas as pd
-from shapely.geometry import LineString
-from tqdm import tqdm
+from   shapely.geometry import LineString
+from   tqdm import tqdm
 
 # Eigene:
 
 
 
-# Programm-Konfiguration:
+# Programmkonfiguration:
 POI_TAGS         = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
 BBOX_SIZE_DEG    = 0.025  # 0.010 = 1000m  Kachelbreite/-hoehe fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
 QUERY_DELAY_SECS = 0.500  # Server schonen (fair use), mgl. Blocking vermeiden
@@ -102,34 +102,34 @@ def load_gpx_points( filepath ):
 
 
 def main():
-	#
-	# Programmkonfiguration:
-	#
+	
+	# Benutzerkonfiguration:
 	parser = argparse.ArgumentParser( 
 		description = (
 			"Queries OpenStreetMap for points of interest (POI) within a given radius along your route and writes them to a GeoJSON file\n\n"
 			"Author: https://github.com/andre-st/wahoo/" 
 		),
-		epilog = "License: ?",
+		epilog          = "License: ?",
 		formatter_class = RawTextHelpFormatter
 	)
 	parser.add_argument( "gpx_file",               help = "load route from the given GPX file path", type = str )
 	parser.add_argument( "-o", "--poi-file",       help = "save POIs in GeoJSON format to the given file path (default is your GPX-file path with .geojson extension)", type = str )
 	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (100 meter)", type = float, default = 0.001 )
 	args = parser.parse_args()
+	
 	if args.poi_file is None:
 		base, ext     = os.path.splitext( args.gpx_file )
 		args.poi_file = base + ".geojson"
 	
-	#
+	
 	# Der ThreadPoolExecutor einer frueheren Programmversion wurde entfernt,
 	# weil die OSM-Server drosseln (vermutlich anhand der IP-Adresse) und ein 
 	# umstaendlicher Code fuer parallele Abfragen dann keinen Nutzen mehr hat.
 	# Eher sinnvoll bei Abfragen gegen mehrere unabhaengige Server.
 	#
 	all_pois = []
-	points  = load_gpx_points( args.gpx_file )
-	lines   = split_by_bbox( points, BBOX_SIZE_DEG, BBOX_SIZE_DEG, args.poi_radius_deg )
+	points   = load_gpx_points( args.gpx_file )
+	lines    = split_by_bbox( points, BBOX_SIZE_DEG, BBOX_SIZE_DEG, args.poi_radius_deg )
 	
 	for line in tqdm( lines, desc = "Querying OSM route tiles" ):
 		buf_pois = query_osm_pois( line, args.poi_radius_deg, POI_TAGS )
