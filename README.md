@@ -62,6 +62,7 @@
 - self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
+	- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 - custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon
 	- RwGPS premium feature? $$$
 	- ```xml
