@@ -118,7 +118,7 @@ def gpx_geojson_to_tcx( gpx_file, poi_file, tcx_file ):
 
 
 
-def get_user_config():
+def get_user_args():
 	parser = argparse.ArgumentParser(
 		description = (
 			"Creates a Wahoo-compatible Garmin TCX track file from a GPX and POIs-GeoJSON file.\n"
@@ -146,7 +146,7 @@ def get_user_config():
 
 
 def main():
-	args = get_user_config()
+	args = get_user_args()
 	gpx_geojson_to_tcx( args.gpx_file, args.poi_file, args.tcx_file )
 	print( f"[INFO] Original track + POIs written to: {args.tcx_file}" )
 

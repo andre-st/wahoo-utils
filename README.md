@@ -83,12 +83,10 @@
 ### Automate finding POIs along the route
 
 Manually adding points of interest is a pain in the for longer rides.
-OpenStreetMap servers allow querying features within a bounding box (Overpass API).
-So we construct several size-optimized boxes from all the route points in a GPX file and query POIs for every box.
-Filtered and deduplicatated, all retrieved POIs are finally written to a TCX file as a list of CoursePoints, 
+OpenStreetMap servers allow querying features within a polygon (Overpass API).
+So we construct a buffered, simplified polygon from all the route points in a GPX file and query POIs for it.
+All retrieved POIs are finally written to a TCX file as a list of CoursePoints, 
 in addition to the original route of course.
-
-![Algorithm terms](./gpx2poi.svg)
 
 Uploading new or changed tracks to the bike computer is more complicated now, though:  
 	1. export from track editor, e.g. Komoot
