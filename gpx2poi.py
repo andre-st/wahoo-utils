@@ -27,8 +27,8 @@ POI_FILE         = "my_route.geojson"
 POI_TAGS         = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
 POI_RADIUS_DEG   = 0.001  # 0.001 =  100m
 BBOX_MAX_W_DEG   = 0.025  # 0.010 = 1000m   Kachelgroesse fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
-BBOX_MAX_H_DEG   = 0.025
-QUERY_DELAY_SECS = 0
+BBOX_MAX_H_DEG   = 0.025  #   "    "    "
+QUERY_DELAY_SECS = 0.500  # Server schonen (fair use), mgl. Blocking vermeiden
 
 
 
@@ -66,7 +66,7 @@ def query_osm_pois( line, poi_radius_deg ):
 	Features-Abfrage beim OSM-Server (Overpass API) fuer ein Strecke
 	"""
 	try:
-		time.sleep( QUERY_DELAY_SECS )             # Server schonen und mgl. Blocking vermeiden
+		time.sleep( QUERY_DELAY_SECS )
 		buffered = line.buffer( poi_radius_deg )   # Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs
 		
 		# Statt Punkte sind OSM-POIs manchmal Polygone, dort dann das Zentrum ermitteln:
@@ -80,9 +80,6 @@ def query_osm_pois( line, poi_radius_deg ):
 		utm_crs              = f"+proj=utm +zone={utm_zone} +datum=WGS84 +units=m +no_defs"
 		
 		pois                 = ox.features_from_bbox( bbox = buffered.bounds, tags = POI_TAGS )
-
-		print( f"POIS gefunden: {len(pois)} - " )
-
 		pois_utm             = pois.to_crs( utm_crs )
 		pois_utm["centroid"] = pois_utm.geometry.centroid
 		pois["geometry"]     = pois_utm["centroid"].to_crs( epsg = 4326 )  # zurueck in lat/lon

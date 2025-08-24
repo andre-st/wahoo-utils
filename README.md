@@ -82,7 +82,7 @@
 
 Manually adding POIs is too cumbersome.
 OSM servers allow querying features within a bounding box. 
-So we construct several bounding boxes from all the route points in a GPX file and query features for every box.
+So we construct several size-optimized bounding boxes from all the route points in a GPX file and query features for every box.
 Filters here, deduplication there, retrieved POIs are finally written to a TCX file as a list of CoursePoints.
 
 ![Algorithm terms](./gpx2poi.svg)
