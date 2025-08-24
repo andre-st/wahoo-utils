@@ -25,7 +25,12 @@ from   tqdm import tqdm
 
 
 # Feste Programmkonfiguration:
-POI_TAGS         = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
+POI_TAGS= { 
+	"amenity": [ "fuel", "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "shelter", "toilets", "water_point", "grave_yard", "marketplace" ], 
+	"landuse": [ "cemetery"],
+	"shop":    [ "supermarket", "bakery", "coffee", "convenience", "food", "ice_cream", "pasta", "water" ],
+	"tourism": [ "camp_site", "camp_pitch" ]
+}
 BBOX_SIZE_DEG    = 0.025  # 0.010 = 1000m  Kachelbreite/-hoehe fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
 QUERY_DELAY_SECS = 0.500  # OSM-Server schonen (fair use), mgl. Blocking vermeiden
 
@@ -138,7 +143,7 @@ def main():
 	
 	print( f"[INFO] {len(points)} points were devided into {len(lines)} boxes" );
 	
-	for line in tqdm( lines, desc = "[INFO] Querying OSM boxes" ):
+	for line in tqdm( lines, desc = "[INFO] Querying box POIs" ):
 		buf_pois = query_osm_pois( line, args.poi_radius_deg, POI_TAGS )
 		time.sleep( QUERY_DELAY_SECS )
 		

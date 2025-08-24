@@ -12,41 +12,53 @@ import os
 
 # Drittanbieter:
 import gpxpy
-from lxml import etree as ET
+from   lxml import etree as ET
 
 # Eigene:
 
 
 
 # Feste Programmkonfiguration:
-AMENITIES_FOOD     = { "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace" }
-AMENITIES_WATER    = { "drinking_water", "toilets", "water_point" }
-AMENITIES_DANGER   = {}
-AMENITIES_FIRSTAID = {}
+TAGS_FOOD     = { "fuel", "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "marketplace", "supermarket", "bakery", "convenience", "food", "pasta" }
+TAGS_WATER    = { "drinking_water", "toilets", "water_point", "water", "cemetery", "grave_yard" }
+TAGS_DANGER   = {}
+TAGS_FIRSTAID = { "shelter", "camp_site", "camp_pitch" }
 
 
 
 def cue_title( props ):
 	name    = props.get( "name"    ) or ""
-	amenity = props.get( "amenity" ) or "POI"
-	amenity = amenity.replace( '_', ' ' )       # "fast_food" -> "fast food"
-	amenity = amenity[0].upper() + amenity[1:]  # "toilets"   -> "Toilets" 
-	title   = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
-	title   = title.rstrip();
+	amenity = props.get( "amenity" ) or ""
+	
+	if amenity:
+		amenity = amenity.replace( '_', ' ' )       # "fast_food" -> "fast food"
+		amenity = amenity[0].upper() + amenity[1:]  # "toilets"   -> "Toilets" 
+	
+	title = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
+	title = title.rstrip();
 	return title
 
 
 
 def map_point_type( props ):
-	amenity = (props.get( "amenity" ) or "").lower()
-	landuse = (props.get( "landuse" ) or "").lower()
-	if amenity in AMENITIES_FOOD:
+	tags = { 
+		(props.get( "amenity" ) or "").lower(),
+		(props.get( "landuse" ) or "").lower(),
+		(props.get( "shop"    ) or "").lower(),
+		(props.get( "tourism" ) or "").lower()
+	}
+	
+	# TCX kennt nur eine handvoll sinnvoller PointTypes (Food, Water, Danger, First Aid),
+	# die auch ein eigenes Icon haben. Der Rest bezieht sich auf Steigungen (Kat. 1-4, Hors)
+	
+	# Schnittmengen mit tags:
+	if   tags & set( TAGS_FOOD ):
 		return "Food"
-	elif amenity in AMENITIES_WATER or landuse == "cemetery":
+	elif tags & set( TAGS_WATER ):
 		return "Water"
-	elif amenity in AMENITIES_DANGER:
+	elif tags & set( TAGS_DANGER ):
 		return "Danger"
-	elif amenity in AMENITIES_FIRSTAID:
+	elif tags & set( TAGS_FIRSTAID ):
 		return "First Aid"
 	else:
 		return "Generic"
@@ -136,7 +148,7 @@ def get_user_config():
 def main():
 	args = get_user_config()
 	gpx_geojson_to_tcx( args.gpx_file, args.poi_file, args.tcx_file )
-
+	print( f"[INFO] Original track + POIs written to: {args.tcx_file}" )
 
 
 if __name__ == "__main__":
