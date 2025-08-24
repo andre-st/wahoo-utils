@@ -24,10 +24,10 @@ from   tqdm import tqdm
 
 
 
-# Programmkonfiguration:
+# Feste Programmkonfiguration:
 POI_TAGS         = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
 BBOX_SIZE_DEG    = 0.025  # 0.010 = 1000m  Kachelbreite/-hoehe fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
-QUERY_DELAY_SECS = 0.500  # Server schonen (fair use), mgl. Blocking vermeiden
+QUERY_DELAY_SECS = 0.500  # OSM-Server schonen (fair use), mgl. Blocking vermeiden
 
 
 
@@ -65,13 +65,12 @@ def query_osm_pois( line, poi_radius, poi_tags ):
 	Features-Abfrage beim OSM-Server (Overpass API) fuer ein Strecke
 	"""
 	try:
-		buffered = line.buffer( poi_radius )   # Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs
+		# Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs:
+		buffered = line.buffer( poi_radius )
 		
 		# Statt Punkte sind OSM-POIs manchmal Polygone, dort dann das Zentrum ermitteln:
 		# OSM-Koordinaten liegen lat/lon EPSG:4326 vor, 
-		# shapely berechnet den Zentroiden aber in den Einheiten der UTM-CRS, 
-		# daher umwandeln:
-		#
+		# shapely berechnet den Zentroiden aber in den Einheiten der UTM-CRS, daher umwandeln:
 		coords               = list( buffered.exterior.coords )
 		mid_lon              = sum( lon for lon, lat in coords ) / len( coords )
 		utm_zone             = int( (mid_lon + 180) // 6 ) + 1   # Universal Transverse Mercator unterteilt Erde in 60 Zonen, jede 6 Grad breit in Laengengrad. Die Zonen sind durchnummeriert von 1 bis 60, von West nach Ost, beginnend bei 180 Grad West.
@@ -83,10 +82,13 @@ def query_osm_pois( line, poi_radius, poi_tags ):
 		pois["geometry"]     = pois_utm["centroid"].to_crs( epsg = 4326 )  # zurueck in lat/lon
 		pois_nearby          = pois[ pois.geometry.within( buffered )]
 		
+		if( len( pois ) > 999 ):
+			print( "[WARN] Value for BBOX_SIZE_DEG or POI radius probably too large" );
+		
 		return pois_nearby
 		
-	except InsufficientResponseError:
-		return gpd.GeoDataFrame()   # empty
+	except InsufficientResponseError:  # Nichts gefunden
+		return gpd.GeoDataFrame()     # .empty
 
 
 
@@ -131,7 +133,9 @@ def main():
 	points   = load_gpx_points( args.gpx_file )
 	lines    = split_by_bbox( points, BBOX_SIZE_DEG, BBOX_SIZE_DEG, args.poi_radius_deg )
 	
-	for line in tqdm( lines, desc = "Querying OSM route tiles" ):
+	print( f"[INFO] {len(points)} points were devided into {len(lines)} boxes" );
+	
+	for line in tqdm( lines, desc = "[INFO] Querying OSM boxes" ):
 		buf_pois = query_osm_pois( line, args.poi_radius_deg, POI_TAGS )
 		time.sleep( QUERY_DELAY_SECS )
 		
@@ -143,9 +147,9 @@ def main():
 		gdf_all = pd.concat( all_pois )   # GeoDataFrame
 		gdf_all = gdf_all.drop_duplicates()
 		gdf_all.to_file( args.poi_file, driver = "GeoJSON" )
-		print( f"{len(gdf_all)} POIs saved to {args.poi_file}" )
+		print( f"[INFO] {len(gdf_all)} points of interest saved to: {args.poi_file}" )
 	else:
-		print( "No POIs found!")
+		print( "[WARN] No points of interest found")
 
 
 
