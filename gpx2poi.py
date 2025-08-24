@@ -103,10 +103,8 @@ def load_gpx_points( filepath ):
 
 
 
-def main():
-	
-	# Benutzerkonfiguration:
-	parser = argparse.ArgumentParser( 
+def get_user_config():
+	parser = argparse.ArgumentParser(
 		description = (
 			"Queries OpenStreetMap for points of interest (POI) within a given radius along your route and writes them to a GeoJSON file\n\n"
 			"Author: https://github.com/andre-st/wahoo/" 
@@ -123,12 +121,17 @@ def main():
 		base, ext     = os.path.splitext( args.gpx_file )
 		args.poi_file = base + ".geojson"
 	
-	
+	return args
+
+
+
+def main():
 	# Der ThreadPoolExecutor einer frueheren Programmversion wurde entfernt,
 	# weil die OSM-Server drosseln (vermutlich anhand der IP-Adresse) und ein 
 	# umstaendlicher Code fuer parallele Abfragen dann keinen Nutzen mehr hat.
 	# Eher sinnvoll bei Abfragen gegen mehrere unabhaengige Server.
-	#
+	
+	args     = get_user_config()
 	all_pois = []
 	points   = load_gpx_points( args.gpx_file )
 	lines    = split_by_bbox( points, BBOX_SIZE_DEG, BBOX_SIZE_DEG, args.poi_radius_deg )
