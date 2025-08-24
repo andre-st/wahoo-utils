@@ -9,7 +9,6 @@
 import argparse
 from   argparse import RawTextHelpFormatter
 import os
-import time
 
 # Drittanbieter:
 import geopandas as gpd
@@ -40,7 +39,7 @@ def query_osm_pois( points, poi_radius, poi_tags ):
 		# Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs:
 		line     = LineString( points )
 		buffered = line.buffer( poi_radius )
-		buffered = buffered.simplify( tolerance = 0.0001, preserve_topology = True )
+		buffered = buffered.simplify( tolerance = 0.001, preserve_topology = True )  # 0.001 = 100 m
 		
 		# Statt Punkte sind OSM-POIs manchmal Polygone, dort dann das Zentrum ermitteln:
 		# OSM-Koordinaten liegen lat/lon EPSG:4326 vor, 
@@ -84,7 +83,7 @@ def get_user_args():
 	)
 	parser.add_argument( "gpx_file",               help = "load route from the given GPX file path", type = str )
 	parser.add_argument( "-o", "--poi-file",       help = "save POIs in GeoJSON format to the given file path (default is your GPX-file path with .geojson extension)", type = str )
-	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (100 meter)", type = float, default = 0.001 )
+	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (ca. 100 meter because 1 degree of latitude ~111 km)", type = float, default = 0.001 )
 	args = parser.parse_args()
 	
 	if args.poi_file is None:
