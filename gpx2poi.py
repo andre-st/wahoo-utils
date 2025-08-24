@@ -1,8 +1,8 @@
 #!/usr/bin/env ./myenv/bin/python
 
 #
-# Program sucht Points of Interest (POI) entlang einer Route 
-# innerhalb eines Radius ueber OpenStreetMap-Server
+# Dieses Program sammelt Points of Interest (POI) innerhalb eines Radius entlang einer Route.
+# Die POI-Daten werden dabei ueber OpenStreetMap-Server (Overpass API) abgefragt.
 #
 #
 # Anmerkungen:
@@ -10,7 +10,6 @@
 # - "Line" und "LineString" sind hier mehrsegmentige/mehrpunktige Linien mit n>=2 Punkten (aka Pfad/Polyline/...)
 #
 #
-
 
 
 import gpxpy
@@ -26,8 +25,7 @@ GPX_FILE         = "my_route.gpx"
 POI_FILE         = "my_route.geojson"
 POI_TAGS         = { "amenity": [ "restaurant","cafe","bar","biergarten","fast_food","pub","ice_cream","food_court","bbq","drinking_water","shelter","toilets","water_point","grave_yard","marketplace" ], "landuse": [ "cemetery"] }
 POI_RADIUS_DEG   = 0.001  # 0.001 =  100m
-BBOX_MAX_W_DEG   = 0.025  # 0.010 = 1000m   Kachelgroesse fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
-BBOX_MAX_H_DEG   = 0.025  #   "    "    "
+BBOX_SIZE_DEG    = 0.025  # 0.010 = 1000m  Kachelbreite/-hoehe fuer OSM-Abfragen (Sweetspot zw. Abfragenmenge und Datenmenge pro Abfrage)
 QUERY_DELAY_SECS = 0.500  # Server schonen (fair use), mgl. Blocking vermeiden
 
 
@@ -104,15 +102,16 @@ def load_gpx_points( filepath ):
 
 
 def main():
-	# Eine fruehere Version hat ThreadPoolExecutor verwendet, wurde aber wieder entfernt,
-	# weil der OSM-Server drosselt und der umstaendlichere Code dann keinen Vorteil hatte.
+	# Der ThreadPoolExecutor einer frueheren Programmversion wurde entfernt,
+	# weil die OSM-Server drosseln (vermutlich anhand der IP-Adresse) und ein 
+	# umstaendlicher Code fuer parallele Abfragen dann keinen Nutzen mehr hat.
 	# Eher sinnvoll bei Abfragen gegen mehrere unabhaengige Server.
 	
 	all_pois = []
 	points  = load_gpx_points( GPX_FILE )
-	lines   = split_by_bbox( points, BBOX_MAX_W_DEG, BBOX_MAX_H_DEG, POI_RADIUS_DEG )
+	lines   = split_by_bbox( points, BBOX_SIZE_DEG, BBOX_SIZE_DEG, POI_RADIUS_DEG )
 	
-	for line in tqdm( lines, desc="Querying OSM-tiles" ):
+	for line in tqdm( lines, desc = "Querying OSM route tiles" ):
 		buf_pois = query_osm_pois( line, POI_RADIUS_DEG )
 		
 		if not buf_pois.empty:
@@ -122,7 +121,7 @@ def main():
 	if all_pois:
 		gdf_all = pd.concat( all_pois )   # GeoDataFrame
 		gdf_all = gdf_all.drop_duplicates()
-		gdf_all.to_file( POI_FILE, driver="GeoJSON" )
+		gdf_all.to_file( POI_FILE, driver = "GeoJSON" )
 		print( f"{len(gdf_all)} POIs saved to {GPX_FILE}" )
 	else:
 		print( "No POIs found!")
