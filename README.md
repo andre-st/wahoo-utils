@@ -59,7 +59,7 @@
 	- DB-table: `CloudPoiDao`
 	- https://www.youtube.com/watch?v=Sl--gcJ95XM
 	- is independent of individual tracks, does not align with changed tracks; perhaps good for wider coverage of an area
-- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time
+- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
 - custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon
@@ -105,7 +105,7 @@ These are aligned and contained with a track file but uploading new or changed t
 |--------------|-------------------------------------|---------------------|-------------------------------------
 | setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
 | gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned_ ride GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
+| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned ride_ GPX file to a TCX with POIs added as CUEs (basic converter); test with gpsvisualizer.com
 | poi2sql.py   | TODO                                | TODO                | TODO updates a local BoltApp SQLite database file 
   
   
