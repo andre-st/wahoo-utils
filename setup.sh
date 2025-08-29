@@ -4,6 +4,11 @@
 pushd "$(dirname "$(realpath "$0")")" > /dev/null || exit 1
 
 
+# Base
+
+mkdir -p routes
+
+
 # Install dependencies in local project directory:
 
 python -m venv "local"
@@ -14,14 +19,14 @@ source "local/bin/activate"
 #    shapely <- geopandas
 #    pandas  <- geopandas
 
-pip install geopandas gpxpy lxml osmnx geopy pygeohash
+pip install geopandas gpxpy lxml osmnx geopy pygeohash adbutils
 
 chmod +x *.py *.sh
 
 
 # Android Debug Bridge:
 
-if [ -d android ]
+if [ -d ./local/opt/platform-tools ]
 then
 	echo "ADB already installed"
 else

@@ -1,4 +1,4 @@
-# Bike Computers Playground: Wahoo Elemnt Bolt, Garmin TCX
+# Wahoo Elemnt Bolt Playground - POIs, Screenrecorder, ...
 
 
 ## Disclaimer
@@ -13,102 +13,70 @@
 	not translated into English at all points.
 
 
+## Auto-generated POIs with gpx2poi & poi2db
 
-## Overview
+![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
+(my Bolt with a rubber protective cover)
 
-- [Wahoo Basics](#wahoo-basics)
-- [Points of Interest (POI)](#points-of-interest-poi)
-- [Screen Recording](#screen-recording)
+Without POIs a distance/bikepacking cylist might miss nearby food/water.
+
+1. OpenStreetMap servers allow querying features within a polygon (Overpass API).
+Gpx2poi constructs a simplified polygon (a buffered line) from all the route points in a GPX route file (Komoot etc), 
+queries hundreds of POIs and writes them to `your_route.geojson`.
+
+2. Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
+The sqlite database file is accessible via Android Debug Bridge (ADB).
+Auto-generated POIs are stored with a magic number in the POI textual address field, so we can tell apart manual POIs from generated POIs.
+Poi2db always recreates the auto POIs list from scratch given a list of geojson-files.
+Program parameter `--delete` removes all auto-POIs without adding new ones.
+
+3. Requires:
+- Linux
+- Python 3
+- `setup.sh` downloads all dependencies to the subdirectory `local`, so your system stays clean after deletion
+
+4. Other Approaches:
+	- native function on the device: "Save my location" = no manual coordinates
+	- adding POIs manually via smartphone companion app = pain
+	- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types (heart-icon only)  -- **we automate that**
+		- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
+		- DB-table: `CloudPoiDao`
+		- https://www.youtube.com/watch?v=Sl--gcJ95XM
+	- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
+		- https://www.heise.de/select/ct/2022/26/2230710050673252243
+		- https://github.com/yokuha/Wahoo-maps
+		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
+	- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  -- **I can NEITHER reproduce that with FIT nor TCX on my Bolt**
+		- RwGPS premium feature? $$$
+		- ```xml
+			<CoursePoint> 
+				<Name>Water</Name> 
+				<Time>2023-10-19T17:13:09Z</Time> 
+				<Position> 
+					<LatitudeDegrees>x.xxxx</LatitudeDegrees> 
+					<LongitudeDegrees>y.yyyy</LongitudeDegrees> 
+				</Position> 
+				<PointType>Water</PointType>   <!-- or: Food, Danger -->
+				<Notes>Water!</Notes> 
+			</CoursePoint>
+			```
 
 
-
-## Wahoo Basics
+## Basics
 
 - Bolt runs an old Android operating system which is accessible via USB-Cable and the _Android Debug Bridge_ (ADB) tool
-- consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install ADB for some reason 
+- consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install or run ADB for some reason 
 	(though some security/privacy risk)
 - Bolt authorizes ADB in debug mode:
 	1. power up without USB-Cable plugged in, 
 	2. press POWER+UP+DOWN simultan. (1 or 2 times)
-	3. white Bolt LED flashes for a second if successfully
-	4. plug in cable
-	5. I had to retry this several times until this "common" method finally worked; 
-		I also pressed UP+DOWN during Bolt's "warm up" phase when it worked
+	3. plug in cable
+	4. check with `adb devices`
 - Bolt supports file formats: 
 	- FIT (newer Garmin binary with smaller filesize), annoyingly requires Garmin FIT SDK
 	- [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older easy Garmin plaintext XML)
 	- GPX (easy plaintext XML)
 
-
-
-## Points of Interest (POI)
-
-### Motivation
-
-- distance cycling / bikepacking
-- requires food, drinking water (cemetery), toilets, shelter (= POI types) along the route
-- cyclist might miss nearby POIs, either planned or non-planned
-
-
-### v2-Bolt's POI support is very basic
-
-- native function on the device: "Save my location" = no manual coordinates
-- adding POIs manually via smartphone companion app = pain
-- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types (heart-icon only) and might not scale well
-	- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
-	- DB-table: `CloudPoiDao`
-	- https://www.youtube.com/watch?v=Sl--gcJ95XM
-	- is independent of individual tracks, does not align with changed tracks; perhaps good for wider coverage of an area
-- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
-	- https://www.heise.de/select/ct/2022/26/2230710050673252243
-	- https://github.com/yokuha/Wahoo-maps
-	- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-- custom CUE hints in FIT (but not TCX or GPX) files will give a text warning when approaching the point + water tap icon  -- I could not reproduce that
-	- RwGPS premium feature? $$$
-	- ```xml
-		<CoursePoint> 
-			<Name>Water</Name> 
-			<Time>2023-10-19T17:13:09Z</Time> 
-			<Position> 
-				<LatitudeDegrees>x.xxxx</LatitudeDegrees> 
-				<LongitudeDegrees>y.yyyy</LongitudeDegrees> 
-			</Position> 
-			<PointType>Water</PointType>   <!-- or: Food, Danger -->
-			<Notes>Water!</Notes> 
-		</CoursePoint>
-		```
-
-
-
-### Automate finding POIs along the route
-
-Manually adding points of interest is a pain in the for longer rides.
-OpenStreetMap servers allow querying features within a polygon (Overpass API).
-So we construct a buffered, simplified polygon from all the route points in a GPX file and query POIs for it.
-All retrieved POIs are finally written to a TCX file as a list of CoursePoints, 
-in addition to the original route of course.
-
-Uploading new or changed tracks to the bike computer is more complicated now, though:  
-	1. export from track editor, e.g. Komoot
-	2. create new track by running tools in this repo against your track
-	3. upload new track to smartphone
-	4. import new track via companion app
-	5. sync Bolt and app
-	6. avoid confusing new and old tracks if autosynced with Komoot
-
-Perhaps we can automatically replace existing files on the Bolt with extended versions?  
-
-
-
-### Tools in this repository
-
-| Executable   | Input files                         | Output files        | Comment
-|--------------|-------------------------------------|---------------------|-------------------------------------
-| setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
-| gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2db.py    | route1.geojson route2.geojson ...   | BoltApp.db          | updates a local BoltApp SQLite database file; it completely replaces old poi2db entries
-  
-  
 
 
 ## Screen Recording
