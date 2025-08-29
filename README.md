@@ -35,9 +35,9 @@
 	5. I had to retry this several times until this "common" method finally worked; 
 		I also pressed UP+DOWN during Bolt's "warm up" phase when it worked
 - Bolt supports file formats: 
-	- FIT (newer Garmin binary with smaller filesize)
-	- [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older Garmin plaintext)
-	- GPX (plaintext)
+	- FIT (newer Garmin binary with smaller filesize), annoyingly requires Garmin FIT SDK
+	- [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older easy Garmin plaintext XML)
+	- GPX (easy plaintext XML)
 
 
 
@@ -63,7 +63,7 @@
 	- https://www.heise.de/select/ct/2022/26/2230710050673252243
 	- https://github.com/yokuha/Wahoo-maps
 	- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon
+- custom CUE hints in FIT (but not TCX or GPX) files will give a text warning when approaching the point + water tap icon  -- I could not reproduce that
 	- RwGPS premium feature? $$$
 	- ```xml
 		<CoursePoint> 
@@ -107,7 +107,7 @@ Perhaps we can automatically replace existing files on the Bolt with extended ve
 | setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
 | gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
 | poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned ride_ GPX file to a TCX with POIs added as CUEs (basic converter); test with [gpsvisualizer.com](https://www.gpsvisualizer.com/)
-| poi2sql.py   | TODO                                | TODO                | TODO updates a local BoltApp SQLite database file 
+| poi2db.py    | route1.geojson route2.geojson ...   | BoltApp.db          | updates a local BoltApp SQLite database file; it completely replaces old poi2db entries
   
   
 

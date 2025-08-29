@@ -1,4 +1,4 @@
-#!/usr/bin/env ./myenv/bin/python
+#!/usr/bin/env ./local/bin/python
 
 # Anmerkungen:
 # - "Line" und "LineString" sind hier mehrsegmentige/mehrpunktige Linien mit n>=2 Punkten (aka Pfad/Polyline/...)
