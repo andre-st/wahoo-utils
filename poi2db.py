@@ -17,9 +17,12 @@ import pygeohash as pgh
 
 # Eigene:
 
+
+# Feste Programmkonfiguration:
 PROG_ID         = "[poi2db]"  # Magic number to identify database rows added by this program
 ADB_DB_DIR      = "/data/data/com.wahoofitness.bolt/databases"
 ADB_DB_FILENAME = "BoltApp.sqlite"
+
 
 
 def cue_title( props ):
@@ -47,7 +50,8 @@ def get_user_args():
 			"  ./poi2db.py route1.geojson route2.geojson route3.geojson \n"
 			"  ./poi2db.py --adb  routes/*.geojson\n"
 			"  ./poi2db.py --db_file=BoltAppTest.sqlite --delete\n"
-			"\nLicense: ?"
+			"\n"
+			"License: ?"
 		),
 		formatter_class = RawTextHelpFormatter
 	)
