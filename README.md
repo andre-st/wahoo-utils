@@ -25,7 +25,7 @@ Gpx2poi constructs a simplified polygon (a buffered line) from all the route poi
 queries hundreds of POIs and writes them to `your_route.geojson`.
 
 2. Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
-The sqlite database file is accessible via Android Debug Bridge (ADB).
+The sqlite database file is accessible via Android Debug Bridge ADB (credit to AndroidAndyUK).
 Auto-generated POIs are stored with a magic number in the POI textual address field, so we can tell apart manual POIs from generated POIs.
 Poi2db always recreates the auto POIs list from scratch given a list of geojson-files.
 Program parameter `--delete` removes all auto-POIs without adding new ones.
