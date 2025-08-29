@@ -20,25 +20,27 @@
 
 Without POIs a distance/bikepacking cylist might miss nearby food/water.
 
-1. OpenStreetMap servers allow querying features within a polygon (Overpass API).
+- Finding POIs along the route:  
+	OpenStreetMap servers allow querying features within a polygon (Overpass API).
 	Gpx2poi constructs a simplified polygon (a buffered line) from all the route points in a GPX route file (Komoot etc), 
 	queries hundreds of POIs and writes them to `your_route.geojson`.
-2. Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
+- Getting POIs to the Bolt:  
+	Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
 	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
 	Auto-generated POIs are stored with a magic number in the POI textual address field, so we can tell apart manual POIs from generated POIs.
 	Poi2db always recreates the auto POIs list from scratch given a list of geojson-files.
 	Program parameter `--delete` removes all auto-POIs without adding new ones.
-3. Requires:
+- Requires:
 	- Linux
 	- Python 3
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
-4. Observations / Disadvantes:
+- Observations / Disadvantages:
 	- heart-icon only for different POI types; maybe "poiType" in the database table changes appearance? perhaps unpacked BoltApp could give answers
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
-5. Other Approaches:
+- Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
-	- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
+	- **self generated maps** with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
