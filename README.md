@@ -31,11 +31,14 @@ Poi2db always recreates the auto POIs list from scratch given a list of geojson-
 Program parameter `--delete` removes all auto-POIs without adding new ones.
 
 3. Requires:
-- Linux
-- Python 3
-- `setup.sh` downloads all dependencies to the subdirectory `local`, so your system stays clean after deletion
+	- Linux
+	- Python 3
+	- `setup.sh` downloads all dependencies to the project's subdirectory `local`, so your system stays clean after deletion
 
-4. Other Approaches:
+4. Observations / Disadvantes:
+	- heart-icon only for different POI types; maybe "poiType" in the database table changes appearance? perhaps unpacked BoltApp could give answers
+
+5. Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
 	- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
