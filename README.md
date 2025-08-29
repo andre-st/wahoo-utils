@@ -33,7 +33,7 @@ Program parameter `--delete` removes all auto-POIs without adding new ones.
 3. Requires:
 	- Linux
 	- Python 3
-	- `setup.sh` downloads all dependencies to the project's subdirectory `local`, so your system stays clean after deletion
+	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
 
 4. Observations / Disadvantes:
 	- heart-icon only for different POI types; maybe "poiType" in the database table changes appearance? perhaps unpacked BoltApp could give answers
