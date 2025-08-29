@@ -38,10 +38,6 @@ Program parameter `--delete` removes all auto-POIs without adding new ones.
 4. Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
-	- adding POIs manually by editing the BoltApp database via ADB and a SQLite client = no POI types (heart-icon only)
-		- DB-file: `/data/data/com.wahoofitness.bolt/databases/BoltApp.sqlite`
-		- DB-table: `CloudPoiDao`
-		- https://www.youtube.com/watch?v=Sl--gcJ95XM
 	- self generated maps with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
