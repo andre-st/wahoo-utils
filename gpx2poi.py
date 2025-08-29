@@ -2,7 +2,8 @@
 
 # Anmerkungen:
 # - "Line" und "LineString" sind hier mehrsegmentige/mehrpunktige Linien mit n>=2 Punkten (aka Pfad/Polyline/...)
-#
+# - POI-Typ wie 'food' oder 'water' ist eine stabilere Abstraktion uber POI-Tags; 
+#   unterstellt wird immer, was ein Distanz-Radfahrer darunter versteht (z.B. Friedhof bietet oft Trinkwasser)
 
 
 # Standard:
@@ -19,6 +20,48 @@ import pandas as pd
 from   shapely.geometry import LineString
 
 # Eigene:
+
+
+# Feste Programmkonfiguration:
+POI_TYPES_TAGS = {
+	"water": {  # = i.S.v. Trinkwasser
+		"amenity": [ "fuel", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "water_point", "grave_yard", "marketplace" ],
+		"landuse": [ "cemetery" ],
+		"shop":    [ "supermarket", "coffee", "convenience", "food", "ice_cream", "water" ]
+	},
+	"food": {
+		"amenity": [ "fuel", "restaurant", "cafe", "biergarten", "fast_food", "ice_cream", "food_court", "bbq", "marketplace" ],
+		"shop":    [ "supermarket", "bakery", "coffee", "convenience", "food", "ice_cream", "pasta", "water" ]
+	},
+	"camp": {
+		"amenity": [ "shelter" ],
+		"tourism": [ "camp_site", "camp_pitch" ]
+	},
+	"toilet": {
+		"amenity": [ "toilets" ]
+	}
+}
+
+
+
+def get_poi_tags( poi_types ):
+	"""
+	Kombiniert Tags mehrerer POI-Typen ohne Duplikate
+	"""
+	tags = {}
+	for t in poi_types:
+		if t in POI_TYPES_TAGS:
+			for key, values in POI_TYPES_TAGS[t].items():
+				if key not in tags:
+					tags[key] = set()
+				tags[key].update( values )
+		else:
+			raise ValueError( f"[ERROR] Given POI type '{t}' is not supported" )
+	
+	for key in tags:  # Fuer Overpass wieder listen statt duplikatfreie sets
+		tags[key] = list( tags[key] )
+	
+	return tags
 
 
 
@@ -88,35 +131,6 @@ def get_user_args():
 		args.poi_file = base + ".geojson"
 	
 	return args
-
-
-
-def get_poi_tags( poi_types ):
-	
-	def extend_unique( lst, new_items ):
-		for item in new_items:
-			if item not in lst:
-				lst.append( item )
-	tags = {
-		"amenity": [],
-		"landuse": [],
-		"shop":    [],
-		"tourism": []
-	}
-	if "water" in poi_types:
-		extend_unique( tags["amenity"], [ "fuel", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "water_point", "grave_yard", "marketplace" ])
-		extend_unique( tags["landuse"], [ "cemetery" ])
-		extend_unique( tags["shop"   ], [ "supermarket", "coffee", "convenience", "food", "ice_cream", "water" ])
-	if "food" in poi_types:
-		extend_unique( tags["amenity"], [ "fuel", "restaurant", "cafe", "biergarten", "fast_food", "ice_cream", "food_court", "bbq", "marketplace" ])
-		extend_unique( tags["shop"   ], [ "supermarket", "bakery", "coffee", "convenience", "food", "ice_cream", "pasta", "water" ])
-	if "camp" in poi_types:
-		extend_unique( tags["amenity"], [ "shelter" ])
-		extend_unique( tags["tourism"], [ "camp_site", "camp_pitch" ])
-	if "toilet" in poi_types:
-		extend_unique( tags["amenity"], [ "toilets" ])
-	
-	return tags
 
 
 
