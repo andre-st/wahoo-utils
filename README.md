@@ -106,7 +106,6 @@ Perhaps we can automatically replace existing files on the Bolt with extended ve
 |--------------|-------------------------------------|---------------------|-------------------------------------
 | setup.sh     | -                                   | /myenv              | installs deps into project-dir, so nothing left on your system after deletion
 | gpx2poi.py   | my\_route.gpx                       | my\_route.geojson   | collects POIs via OpenStreetMap within 100 meter radius along the given route
-| poi2tcx.py   | my\_route.gpx<br>my\_route.geojson  | my\_route.tcx       | converts _planned ride_ GPX file to a TCX with POIs added as CUEs (basic converter); test with [gpsvisualizer.com](https://www.gpsvisualizer.com/)
 | poi2db.py    | route1.geojson route2.geojson ...   | BoltApp.db          | updates a local BoltApp SQLite database file; it completely replaces old poi2db entries
   
   
