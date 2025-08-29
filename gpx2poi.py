@@ -22,15 +22,6 @@ from   shapely.geometry import LineString
 
 
 
-# Feste Programmkonfiguration:
-POI_TAGS= { 
-	"amenity": [ "fuel", "restaurant", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "shelter", "toilets", "water_point", "grave_yard", "marketplace" ], 
-	"landuse": [ "cemetery"],
-	"shop":    [ "supermarket", "bakery", "coffee", "convenience", "food", "ice_cream", "pasta", "water" ],
-	"tourism": [ "camp_site", "camp_pitch" ]
-}
-
-
 def query_osm_pois( points, poi_radius, poi_tags ):
 	"""
 	Features-Abfrage beim OSM-Server (Overpass API) fuer ein Strecke
@@ -78,10 +69,16 @@ def get_user_args():
 			"Queries OpenStreetMap for points of interest (POI) within a given radius along your route and writes them to a GeoJSON file\n\n"
 			"Author: https://github.com/andre-st/wahoo/" 
 		),
-		epilog          = "License: ?",
+		epilog = (
+			"Examples:\n"
+			"  ./gpx2poi.py --poi-types=water,food  your_route.gpx\n"
+			"\n"
+			"License: ?"
+		),
 		formatter_class = RawTextHelpFormatter
 	)
 	parser.add_argument( "gpx_file",               help = "load route from the given GPX file path", type = str )
+	parser.add_argument( "-t", "--poi-types",      help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
 	parser.add_argument( "-o", "--poi-file",       help = "save POIs in GeoJSON format to the given file path (default is your GPX-file path with .geojson extension)", type = str )
 	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (ca. 100 meter because 1 degree of latitude ~111 km)", type = float, default = 0.001 )
 	args = parser.parse_args()
@@ -94,10 +91,40 @@ def get_user_args():
 
 
 
+def get_poi_tags( poi_types ):
+	
+	def extend_unique( lst, new_items ):
+		for item in new_items:
+			if item not in lst:
+				lst.append( item )
+	tags = {
+		"amenity": [],
+		"landuse": [],
+		"shop":    [],
+		"tourism": []
+	}
+	if "water" in poi_types:
+		extend_unique( tags["amenity"], [ "fuel", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "water_point", "grave_yard", "marketplace" ])
+		extend_unique( tags["landuse"], [ "cemetery" ])
+		extend_unique( tags["shop"   ], [ "supermarket", "coffee", "convenience", "food", "ice_cream", "water" ])
+	if "food" in poi_types:
+		extend_unique( tags["amenity"], [ "fuel", "restaurant", "cafe", "biergarten", "fast_food", "ice_cream", "food_court", "bbq", "marketplace" ])
+		extend_unique( tags["shop"   ], [ "supermarket", "bakery", "coffee", "convenience", "food", "ice_cream", "pasta", "water" ])
+	if "camp" in poi_types:
+		extend_unique( tags["amenity"], [ "shelter" ])
+		extend_unique( tags["tourism"], [ "camp_site", "camp_pitch" ])
+	if "toilet" in poi_types:
+		extend_unique( tags["amenity"], [ "toilets" ])
+	
+	return tags
+
+
+
 def main():
-	args   = get_user_args()
-	points = load_gpx_points( args.gpx_file )
-	pois   = query_osm_pois( points, args.poi_radius_deg, POI_TAGS )
+	args     = get_user_args()
+	points   = load_gpx_points( args.gpx_file )
+	poi_tags = get_poi_tags( args.poi_types )
+	pois     = query_osm_pois( points, args.poi_radius_deg, poi_tags )
 	
 	if not pois.empty:
 		gdf_all = pd.concat([ pois ])   # GeoDataFrame

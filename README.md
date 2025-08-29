@@ -18,7 +18,7 @@
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
 (my Bolt with a rubber protective cover)
 
-Without POIs a distance/bikepacking cylist might miss nearby food/water.
+Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
 - Finding POIs along the route:  
 	OpenStreetMap servers allow querying features within a polygon (Overpass API).
@@ -36,6 +36,7 @@ Without POIs a distance/bikepacking cylist might miss nearby food/water.
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
 - Observations / Disadvantages:
 	- heart-icon only for different POI types; maybe "poiType" in the database table changes appearance? perhaps unpacked BoltApp could give answers
+	- better restrict POI types to food/water -or- shelter, at the moment
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
 - Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
