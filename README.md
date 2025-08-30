@@ -17,7 +17,7 @@
 
 Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
-- Finding POIs along the route:  
+- Finding POIs in a 100 meter radius along the route:  
 	OpenStreetMap servers allow querying features within a polygon (Overpass API).
 	Gpx2poi constructs a simplified polygon (a buffered line) from all the route points in a GPX route file (Komoot etc), 
 	queries hundreds of POIs and writes them to `your_route.geojson`.
