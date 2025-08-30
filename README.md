@@ -18,21 +18,21 @@
 Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
 - Finding POIs in a 100 meter radius along the route:  
-	OpenStreetMap servers allow querying features within a polygon (Overpass API).
-	Gpx2poi constructs a simplified polygon (a buffered line) from all the route points in a GPX route file (Komoot etc), 
-	queries hundreds of POIs and writes them to `your_route.geojson`.
+	OpenStreetMap servers allow to query features within a geographic polygon (Overpass API).  
+	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file from Komoot or similar. 
+	It receives hundreds of features for this polygon and writes them to `your_route.geojson`.
 - Getting POIs to the Bolt:  
-	Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
+	`Poi2db` adds these features as POIs to Bolt's "Save my location" table on the device. 
 	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
-	Auto-generated POIs are stored with a magic number in the POI textual address field, so we can tell apart manual POIs from generated POIs.
-	Poi2db always recreates the entire auto-POIs list from scratch given a list of geojson-files.
-	Program parameter `--delete` removes all auto-POIs without adding new ones.
+	Poi2db always recreates the entire auto-POIs list from scratch given a list of geojson-files. 
+	Program parameter `--delete` removes all auto-POIs without adding new ones. Manual POIs are not touched.
 - Requires:
 	- Linux
 	- Python 3
+	- USB data cable connecting Bolt
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
 - Observations / Disadvantages:
-	- heart-icon only for different POI types; maybe "poiType" in the database table changes appearance? perhaps unpacked BoltApp could give answers
+	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
 	- better restrict POI types to food/water -or- shelter, at the moment
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
 - Other Approaches:
