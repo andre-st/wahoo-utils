@@ -15,6 +15,7 @@
 # Standard:
 import argparse
 from   argparse import RawTextHelpFormatter
+import math
 import os
 import time
 
@@ -76,21 +77,26 @@ def get_poi_tags( poi_types ):
 
 
 
-def query_osm_pois( points, poi_radius_deg, poi_tags ):
+def query_osm_pois( points, poi_radius_m, poi_tags ):
 	"""
 	Features-Abfrage beim OSM-Server (Overpass API) fuer ein Strecke
 	"""
 	try:
+		# Buffer-Radius berechnen
+		mid_lon    = sum( p[0] for p in points ) / len( points )   # Durchschnitt
+		mid_lat    = sum( p[1] for p in points ) / len( points )   # Durchschnitt
+		lat_deg    = poi_radius_m /  111320                                        # Abstand zw. 2 Breitenkreisen, deren geogr. Breite sich um 1 Grad unterscheidet, betraegt immer 111,320 Meter
+		lon_deg    = poi_radius_m / (111320 * math.cos( math.radians( mid_lat )))  # Abstand zw. 2 Laengenkreisen haengt vom Breitengrad ab, laufen am Pol zusammen
+		radius_deg = max( lat_deg, lon_deg )  # Buffer in beide Richtungen mind.gewuenschte Groesse, auch wenn Laengengrad kleiner ist
+		
 		# Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs:
 		line     = LineString( points )
-		buffered = line.buffer( poi_radius_deg )
+		buffered = line.buffer( radius_deg )
 		buffered = buffered.simplify( tolerance = 0.001, preserve_topology = True )  # 0.001 = 100 m
 		
 		# Statt Punkte sind OSM-POIs manchmal Polygone, dort dann das Zentrum ermitteln:
 		# OSM-Koordinaten liegen lat/lon EPSG:4326 vor, 
 		# shapely berechnet den Zentroiden aber in den Einheiten der UTM-CRS, daher umwandeln:
-		coords               = list( buffered.exterior.coords )
-		mid_lon              = sum( lon for lon, lat in coords ) / len( coords )
 		utm_zone             = int( (mid_lon + 180) // 6 ) + 1   # Universal Transverse Mercator unterteilt Erde in 60 Zonen, jede 6 Grad breit in Laengengrad. Die Zonen sind durchnummeriert von 1 bis 60, von West nach Ost, beginnend bei 180 Grad West.
 		utm_crs              = f"+proj=utm +zone={utm_zone} +datum=WGS84 +units=m +no_defs"
 		
@@ -142,9 +148,8 @@ def get_user_args():
 
 
 def main():
-	args           = get_user_args()
-	poi_tags       = get_poi_tags( args.poi_types )
-	poi_radius_deg = args.poi_radius / 111320    # 0.001 ~= 100 meter; 1 degree ≈ 111,320 meters everywhere WGS84, near Earth surface
+	args     = get_user_args()
+	poi_tags = get_poi_tags( args.poi_types )
 	
 	for i, gpx_file in enumerate( args.gpx_files ):
 		print( f"[INFO] Processing GPX file: {gpx_file}" )
@@ -152,7 +157,7 @@ def main():
 		base, ext  = os.path.splitext( gpx_file )
 		poi_file   = base + ".geojson"
 		points     = load_gpx_points( gpx_file )
-		pois       = query_osm_pois( points, poi_radius_deg, poi_tags )
+		pois       = query_osm_pois( points, args.poi_radius, poi_tags )
 		
 		if not pois.empty:
 			gdf_all = pd.concat([ pois ])   # GeoDataFrame
