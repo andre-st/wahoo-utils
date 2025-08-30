@@ -30,6 +30,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		(tested on 60 km tours; usually recommended to split long distances for overview and smoother re-routing on a bike computer)
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
+	- independent of zoom level
 - Cons / Known issues:
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types arenâ€™t visually distinguished. 
