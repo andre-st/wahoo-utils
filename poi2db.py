@@ -57,7 +57,7 @@ def get_user_args():
 		formatter_class = RawTextHelpFormatter
 	)
 	parser.add_argument( "poi_files",        help = "rebuild POI database entirely from scratch from the given list of GeoJSON files (manual POIs are not affected)", nargs = "*" )
-	parser.add_argument( "-d", "--delete",   help = "delete old POIs from database only; only required when there are no POI files", action = "store_true" )
+	parser.add_argument( "-d", "--delete",   help = "delete old POIs from database only; required when there are no GeoJSON files (manual POIs are not affected)", action = "store_true" )
 	parser.add_argument( "-i", "--db_file",  help = "load the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB)", type = str )
 	args = parser.parse_args()
 	
