@@ -4,6 +4,12 @@
 # - "Line" und "LineString" sind hier mehrsegmentige/mehrpunktige Linien mit n>=2 Punkten (aka Pfad/Polyline/...)
 # - POI-Typ wie 'food' oder 'water' ist eine stabilere Abstraktion uber POI-Tags; 
 #   unterstellt wird immer, was ein Distanz-Radfahrer darunter versteht (z.B. Friedhof bietet oft Trinkwasser)
+#
+# TODO:
+# - POIs mit unpassenden Oeffnungszeiten entfernen
+# - POIs mit niedrigen Google/Foursquare-Bewertungen entfernen?
+# - 
+
 
 
 # Standard:
@@ -40,6 +46,8 @@ POI_TYPES_TAGS = {
 	"toilet": {
 		"amenity": [ "toilets" ]
 	}
+	# "repair":   radwerkstatt
+	# "firstaid": apotheken
 }
 
 
