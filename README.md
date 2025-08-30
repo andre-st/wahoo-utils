@@ -5,9 +5,9 @@
 
 ## Disclaimer
 
-1. Programs and information offered here are not official from Wahoo or Garmin, but purely a private project
+1. Programs and information offered here are not official from Wahoo, but purely a private project
 2. Use this project at your own risk. Following these instructions may void your warranty, damage your device, cause unexpected issues
-4. Programs here are all in their early stages, not tested everywhere, not particularly optimized or fault-tolerant
+3. Programs here are not tested everywhere, not particularly optimized or fault-tolerant
 
 
 ## Auto-generated Points of Interest with gpx2poi & poi2db
