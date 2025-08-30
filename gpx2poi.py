@@ -116,7 +116,8 @@ def get_user_args():
 			"Examples:\n"
 			"  ./gpx2poi.py --poi-types=water,food  your_route.gpx\n"
 			"\n"
-			"License: ?"
+			"License:\n"
+			"   MIT License"
 		),
 		formatter_class = RawTextHelpFormatter
 	)

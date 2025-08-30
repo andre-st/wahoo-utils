@@ -51,7 +51,8 @@ def get_user_args():
 			"  ./poi2db.py --adb  routes/*.geojson\n"
 			"  ./poi2db.py --db_file=BoltAppTest.sqlite --delete\n"
 			"\n"
-			"License: ?"
+			"License:\n"
+			"  MIT License"
 		),
 		formatter_class = RawTextHelpFormatter
 	)
