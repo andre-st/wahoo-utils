@@ -19,26 +19,28 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
 - Finding POIs in a 100 meter `--poi-radius-deg` along the route:  
 	OpenStreetMap servers allow to query features within a geographic polygon (Overpass API).  
-	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file from Komoot or similar. 
+	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file downloaded from Komoot or similar. 
 	It receives hundreds of features for this polygon and writes them to `your_route.geojson`. 
 - Getting POIs to the Bolt:  
 	`Poi2db` adds these features as POIs to Bolt's "Save my location" table on the device. 
 	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
 	Poi2db always recreates the entire auto-POIs list from scratch given a list of geojson-files. 
-	Program parameter `--delete` removes all auto-POIs without adding new ones. Manual POIs are not touched.
+	Program parameter `--delete` removes all auto-POIs without adding new ones. 
+	Manual POIs are not touched.
+- Pros:
+	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours) and little disk space
+	- you don’t need any other POI-capable device
+- Cons / Known issues:
+	- heart-icon only for different POI types; value 1 instead of 0 for "poiType" in the database had no effect, perhaps reversing BoltApp could give answers
+	- at the moment, better restrict to either `--poi-types=food,water` or `--poi-types=camp`, not both so you know what to expect from a heart-icon
+	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
+	- no auto-POIs when detouring
 - Requires:
 	- Linux
 	- Python 3 (with pip)
 	- USB data cable connecting Bolt
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
-- Observations / known issues:
-	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
-	- at the moment, better restrict to either `--poi-types=food,water` or `--poi-types=camp`, not both so you know what to expect from a heart-icon
-	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
-	- no auto-POIs when detouring
-	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours) and little disk space
 - Other approaches:
-	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
