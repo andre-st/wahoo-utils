@@ -23,17 +23,18 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs aren�
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
 - Getting POIs onto the Bolt:  
 	`Poi2db` adds these features as POIs to the Bolt’s "Save my location" table on the device.
-	The SQLite database file is accessible via Android Debug Bridge (ADB) (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
-	Poi2db always recreates the entire auto-POIs list from scratch using a list of GeoJSON files.
-	The program parameter `--delete` removes all auto-POIs without adding new ones. 
-	Manual POIs are not affected.
+	The SQLite database file is accessible via Android Debug Bridge `--adb` (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
+	`Poi2db` always recreates the entire auto-POIs list from scratch!
+	To do this, it reads one or more GeoJSON files produced by `gpx2poi`.
+	Use program parameter `--delete` to remove all auto-POIs without adding new ones. 
+	Manual POIs are never affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds (tested on 60 km tours) and uses very little disk space.
 	- no additional POI-capable device is required
 - Cons / Known issues:
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types aren’t visually distinguished. 
-		Setting poiType to 1 instead of 0 in the database has no effect (Reversing the Bolt app might reveal why.)
+		Setting poiType to 1 instead of 0 in the database has no effect (Reversing the Bolt app might reveal why)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` &ndash; not both &ndash; 
 		so the heart icon meaning is predictable
 	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
