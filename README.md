@@ -46,8 +46,8 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		$ ./poi2db.py  --help
 		$                # 1. download _selected_ GPX files to "routes"-directory
 		$                # 2. enable Bolt's debug mode and connect USB cable
-		$ ./gpx2poi.py routes/*.gpx      # Writes POIs for all GPX tracks to geojson-files
-		$ ./poi2db.py  routes/*.geojson  # Adds POIs for all tracks to the Bolt
+		$ ./gpx2poi.py routes/*.gpx      # Saves POIs for all GPX tracks in local geojson-files
+		$ ./poi2db.py  routes/*.geojson  # Recreates POI-list on the Bolt
 	```
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
@@ -57,9 +57,9 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-	- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I can **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode)
-		- afaik the appearance of icons is limited to a specific short distance from the route (poi2db isn't limited)
+	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
+		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX icons shown in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
+		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
 			<CoursePoint> 
