@@ -56,7 +56,7 @@ def get_poi_tags( poi_types ):
 					tags[key] = set()
 				tags[key].update( values )
 		else:
-			raise ValueError( f"[ERROR] Given POI type '{t}' is not supported" )
+			raise ValueError( f"[ERROR] Given POI type '{t}' is not supported. See --help parameter" )
 	
 	for key in tags:  # Fuer Overpass wieder listen statt duplikatfreie sets
 		tags[key] = list( tags[key] )
@@ -135,10 +135,10 @@ def get_user_args():
 
 
 def main():
-	args     = get_user_args()
-	points   = load_gpx_points( args.gpx_file )
-	poi_tags = get_poi_tags( args.poi_types )
-	pois     = query_osm_pois( points, args.poi_radius_deg, poi_tags )
+	args   = get_user_args()
+	points = load_gpx_points( args.gpx_file )
+	tags   = get_poi_tags( args.poi_types )
+	pois   = query_osm_pois( points, args.poi_radius_deg, tags )
 	
 	if not pois.empty:
 		gdf_all = pd.concat([ pois ])   # GeoDataFrame
