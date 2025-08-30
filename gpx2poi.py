@@ -76,14 +76,14 @@ def get_poi_tags( poi_types ):
 
 
 
-def query_osm_pois( points, poi_radius, poi_tags ):
+def query_osm_pois( points, poi_radius_deg, poi_tags ):
 	"""
 	Features-Abfrage beim OSM-Server (Overpass API) fuer ein Strecke
 	"""
 	try:
 		# Strecke mit Umhuellung/Padding/Puffer als Grenzbereich fuer POIs:
 		line     = LineString( points )
-		buffered = line.buffer( poi_radius )
+		buffered = line.buffer( poi_radius_deg )
 		buffered = buffered.simplify( tolerance = 0.001, preserve_topology = True )  # 0.001 = 100 m
 		
 		# Statt Punkte sind OSM-POIs manchmal Polygone, dort dann das Zentrum ermitteln:
