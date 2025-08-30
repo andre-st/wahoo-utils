@@ -57,6 +57,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		Additionally, as of September 2025, it appears to be broken (if Iâ€™m not mistaken)
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
+		- https://github.com/treee111/wahooMapsCreator
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
 		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX icons shown in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
