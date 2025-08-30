@@ -5,8 +5,8 @@
 
 ## Disclaimer
 
-1. Programs and information offered here are not official from Wahoo, but purely a private project
-2. Use this project at your own risk. Following these instructions may void your warranty, damage your device, cause unexpected issues
+1. Programs and info offered here are not official from Wahoo, but a private non-commercial project.
+2. Use this project at your own risk: It may void your warranty, damage your device, cause unexpected issues.
 3. Programs here are not tested everywhere, not particularly optimized or fault-tolerant
 
 
@@ -17,7 +17,7 @@
 
 Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
-- Finding POIs in a 100 meter radius along the route:  
+- Finding POIs in a 100 meter `--poi-radius-deg` along the route:  
 	OpenStreetMap servers allow to query features within a geographic polygon (Overpass API).  
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file from Komoot or similar. 
 	It receives hundreds of features for this polygon and writes them to `your_route.geojson`. 
@@ -28,16 +28,16 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	Program parameter `--delete` removes all auto-POIs without adding new ones. Manual POIs are not touched.
 - Requires:
 	- Linux
-	- Python 3
+	- Python 3 (with pip)
 	- USB data cable connecting Bolt
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
-- Observations / Disadvantages:
+- Observations / known issues:
 	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
-	- at the moment, better restrict `--poi-types` to either *food,water* or *camp*, so you know what to expect
+	- at the moment, better restrict to either `--poi-types=food,water` or `--poi-types=camp`, not both so you know what to expect from a heart-icon
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
 	- no auto-POIs when detouring
-	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours)
-- Other Approaches:
+	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours) and little disk space
+- Other approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space
@@ -63,7 +63,8 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	- navigate to POIs with your smartphone when hungry/thirsty
 
 
-## Basics
+
+## Wahoo Basics
 
 - Bolt runs an old Android operating system which is accessible via USB-Cable and the _Android Debug Bridge_ (ADB) tool
 - consider [WebADB](https://app.webadb.com) via Chrome browser (using WebUSB) when unable to install or run ADB for some reason 
@@ -80,9 +81,9 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 
 
 
-## Screen Recording
+## See Also
 
-- https://www.youtube.com/watch?v=dSMxnPvunco
-
+- my stared cycling tools on GitHub: https://github.com/stars/andre-st/lists/cycling
+- screen recording on Wahoo devices: https://www.youtube.com/watch?v=dSMxnPvunco
 
 
