@@ -86,7 +86,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	4. check with `adb devices`
 - Bolt supports file formats: 
 	- FIT (newer Garmin binary with smaller filesize), annoyingly requires Garmin FIT SDK
-	- [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) (older easy Garmin plaintext XML)
+	- TCX (older easy Garmin plaintext XML)
 	- GPX (easy plaintext XML)
 
 
