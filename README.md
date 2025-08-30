@@ -19,7 +19,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 
 - Finding `--poi-types=water,food` within a 100-meter `--poi-radius` along your route:  
 	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
-	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file [downloaded from Komoot](https://github.com/pieterclaerhout/export-komoot) or similar services.
+	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
 - Getting POIs onto the Bolt:  
 	`Poi2db` adds these features as POIs to the Boltâ€™s "Save my location" table on the device.
@@ -30,15 +30,16 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		(tested on 60 km tours; usually recommended to split long distances for overview and smoother re-routing on a bike computer)
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
-	- independent of zoom level
+	- POI visibility independent of the zoom level
 - Cons / Known issues:
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types arenâ€™t visually distinguished. 
 		(Setting poiType to 1 instead of 0 in the database has no effect. Reversing the Bolt app might reveal why)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
 		so the heart icon meaning is predictable
-	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
-	- no auto-POIs available when detouring
+	- extra step required: when updating routes in Komoot or similar, you must [copy them](https://github.com/pieterclaerhout/export-komoot)
+		to this project and rebuild the POI list
+	- no auto-POIs available when detouring (depending on the POI radius)
 - Installation:
 	```sh
 		$ ./setup.sh     # installs ADB, python-libs etc to the project's subdir 'local', so your system stays clean
@@ -53,9 +54,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and 
-		regular generation requires significant time and disk space.
-		Additionally, as of September 2025, it appears to be broken (if Iâ€™m not mistaken)
-		- https://www.heise.de/select/ct/2022/26/2230710050673252243
+		regular generation requires significant time and disk space
 		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
