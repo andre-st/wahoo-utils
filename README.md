@@ -5,9 +5,9 @@
 
 ## Disclaimer
 
-1. Programs and info offered here are not official from Wahoo, but a private non-commercial project.
-2. Use this project at your own risk: It may void your warranty, damage your device, cause unexpected issues.
-3. Programs here are not tested everywhere, not particularly optimized or fault-tolerant
+1. The programs and information provided here are not official Wahoo products; this is a private, non-commercial project.
+2. Use at your own risk: It may void your warranty, damage your device, or cause unexpected issues.
+3. The programs have not been tested in all environments and are not specifically optimized or fault-tolerant.
 
 
 ## Auto-generated Points of Interest with gpx2poi & poi2db
@@ -15,26 +15,29 @@
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
 (my Bolt with a rubber protective cover)
 
-Without POIs a distance/bikepacking cyclist might miss nearby food/water.
+A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
-- Finding POIs in a 100 meter `--poi-radius-deg` along the route:  
-	OpenStreetMap servers allow to query features within a geographic polygon (Overpass API).  
-	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file downloaded from Komoot or similar. 
-	It receives hundreds of features for this polygon and writes them to `your_route.geojson`. 
-- Getting POIs to the Bolt:  
-	`Poi2db` adds these features as POIs to Bolt's "Save my location" table on the device. 
-	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
-	Poi2db always recreates the entire auto-POIs list from scratch given a list of geojson-files. 
-	Program parameter `--delete` removes all auto-POIs without adding new ones. 
-	Manual POIs are not touched.
+- Finding POIs within a 100-meter `--poi-radius-deg` along the route:  
+	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
+	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
+	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
+- Getting POIs onto the Bolt:  
+	`Poi2db` adds these features as POIs to the Bolt’s "Save my location" table on the device.
+	The SQLite database file is accessible via Android Debug Bridge (ADB) (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
+	Poi2db always recreates the entire auto-POIs list from scratch using a list of GeoJSON files.
+	The program parameter `--delete` removes all auto-POIs without adding new ones. 
+	Manual POIs are not affected.
 - Pros:
-	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours) and little disk space
-	- you don’t need any other POI-capable device
+	- POI generation and updating the Bolt takes only a few seconds (tested on 60 km tours) and uses very little disk space.
+	- no additional POI-capable device is required
 - Cons / Known issues:
-	- heart-icon only for different POI types; value 1 instead of 0 for "poiType" in the database had no effect, perhaps reversing BoltApp could give answers
-	- at the moment, better restrict to either `--poi-types=food,water` or `--poi-types=camp`, not both so you know what to expect from a heart-icon
-	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
-	- no auto-POIs when detouring
+	- the Bolt uses a single heart icon for all POI types, 
+		so different types aren’t visually distinguished. 
+		Setting poiType to 1 instead of 0 in the database has no effect (Reversing the Bolt app might reveal why.)
+	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` &ndash; not both &ndash; 
+		so the heart icon meaning is predictable
+	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
+	- no auto-POIs available when detouring
 - Requires:
 	- Linux
 	- Python 3 (with pip)
@@ -42,14 +45,15 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
-	- **self generated maps** with POI-symbols = best approach but nasty setup and regular generation needs lot of time and disk space.  
-		If I am not mistaken, at the time of this text (Sept. 2025) it is also broken
+	- **self generated maps** with POI-symbols = best approach but nasty setup and 
+		regular generation requires significant time and disk space.
+		Additionally, as of September 2025, it appears to be broken (if I’m not mistaken).
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
 		- I can NEITHER reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode)
-		- I read, appearance of icons is limited to a specific short distance from the route (poi2db isn't limited)
+		- I read that the appearance of icons is limited to a specific short distance from the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
 			<CoursePoint> 
