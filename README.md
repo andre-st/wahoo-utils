@@ -29,8 +29,9 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	Use program parameter `--delete` to remove all auto-POIs without adding new ones. 
 	Manual POIs are never affected.
 - Pros:
-	- POI generation and updating the Bolt takes only a few seconds (tested on 60 km tours) and uses very little disk space.
+	- POI generation and updating the Bolt takes only a few seconds (tested on 60 km tours) and uses very little disk space
 	- no additional POI-capable device is required
+	- freely definable POI radius in contrast to navigation cues
 - Cons / Known issues:
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types arenâ€™t visually distinguished. 
@@ -48,13 +49,13 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and 
 		regular generation requires significant time and disk space.
-		Additionally, as of September 2025, it appears to be broken (if Iâ€™m not mistaken).
+		Additionally, as of September 2025, it appears to be broken (if Iâ€™m not mistaken)
 		- https://www.heise.de/select/ct/2022/26/2230710050673252243
 		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom CUE hints in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I can NEITHER reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode)
-		- I read that the appearance of icons is limited to a specific short distance from the route (poi2db isn't limited)
+		- I can neither reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode)
+		- AFAIK the appearance of icons is limited to a specific short distance from the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
 			<CoursePoint> 
