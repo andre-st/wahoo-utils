@@ -142,8 +142,9 @@ def get_user_args():
 
 
 def main():
-	args = get_user_args()
-	tags = get_poi_tags( args.poi_types )
+	args           = get_user_args()
+	poi_tags       = get_poi_tags( args.poi_types )
+	poi_radius_deg = args.poi_radius / 111320    # 0.001 ~= 100 meter; 1 degree ≈ 111,320 meters everywhere WGS84, near Earth surface
 	
 	for i, gpx_file in enumerate( args.gpx_files ):
 		print( f"[INFO] Processing GPX file: {gpx_file}" )
@@ -151,8 +152,7 @@ def main():
 		base, ext  = os.path.splitext( gpx_file )
 		poi_file   = base + ".geojson"
 		points     = load_gpx_points( gpx_file )
-		radius_deg = args.poi_radius / 111320    # 0.001 ~= 100 meter; 1 degree ≈ 111,320 meters everywhere WGS84, near Earth surface
-		pois       = query_osm_pois( points, radius_deg, tags )
+		pois       = query_osm_pois( points, poi_radius_deg, poi_tags )
 		
 		if not pois.empty:
 			gdf_all = pd.concat([ pois ])   # GeoDataFrame
