@@ -20,7 +20,7 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 - Finding POIs in a 100 meter radius along the route:  
 	OpenStreetMap servers allow to query features within a geographic polygon (Overpass API).  
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all the route points in a GPX file from Komoot or similar. 
-	It receives hundreds of features for this polygon and writes them to `your_route.geojson`.
+	It receives hundreds of features for this polygon and writes them to `your_route.geojson`. 
 - Getting POIs to the Bolt:  
 	`Poi2db` adds these features as POIs to Bolt's "Save my location" table on the device. 
 	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
@@ -35,7 +35,8 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
 	- better restrict POI types to food/water -or- shelter, at the moment
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
-	- no POIs when detouring
+	- no auto-POIs when detouring
+	- only takes a few seconds (at least for the tested 60 km tours)
 - Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
