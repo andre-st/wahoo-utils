@@ -26,7 +26,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
 	`Poi2db` always recreates the entire auto-POIs list from scratch!
 	To do this, it reads one or more GeoJSON files produced by `gpx2poi`.
-	Use program parameter `--delete` to remove all auto-POIs without adding new ones. 
+	Use program option `--delete` to remove all auto-POIs without adding new ones. 
 	Manual POIs are never affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
@@ -42,16 +42,16 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
 	- no auto-POIs available when detouring
 - Installation:
-	- requires: Linux, Python 3 (with pip), USB data cable connecting Bolt
-	- ```sh
-		$ ./setup.sh     # installs dependencies (ADB, python-libs, ...) to the project's subdirectory 'local', so your system stays clean
+	```sh
+		$ ./setup.sh     # installs ADB, python-libs etc to the project's subdir 'local', so your system stays clean
+		$                # requires Linux, Python 3 with pip
 		$ ./gpx2poi.py --help
 		$ ./poi2db.py  --help
-		$                # download GPX files to ./routes
+		$                # download GPX files to "routes"-directory
 		$                # enable Bolt's debug mode and connect USB cable
-		$ ./gpx2poi.py routes/*.gpx         # Get POIs for all GPX tracks
-		$ ./poi2db.py  routes/*.geojson     # Add all POIs to the Bolt
-		```
+		$ ./gpx2poi.py routes/*.gpx      # Writes POIs for all GPX tracks to geojson-Files
+		$ ./poi2db.py  routes/*.geojson  # Adds all POIs to the Bolt
+	```
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and 
