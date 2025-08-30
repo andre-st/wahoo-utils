@@ -33,10 +33,10 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
 - Observations / Disadvantages:
 	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
-	- better restrict POI types to food/water -or- shelter, at the moment
+	- at the moment, better restrict `--poi-types` to either *food,water* or *camp*, so you know what to expect
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
 	- no auto-POIs when detouring
-	- only takes a few seconds (at least for the tested 60 km tours)
+	- POI-generation and updating Bolt only takes a few seconds (at least for the tested 60 km tours)
 - Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
