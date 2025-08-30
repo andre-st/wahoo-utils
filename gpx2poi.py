@@ -16,6 +16,7 @@
 import argparse
 from   argparse import RawTextHelpFormatter
 import os
+import time
 
 # Drittanbieter:
 import geopandas as gpd
@@ -49,6 +50,8 @@ POI_TYPES_TAGS = {
 	# "repair":   radwerkstatt
 	# "firstaid": apotheken
 }
+
+OSM_QUERY_DELAY_SECS = 2
 
 
 
@@ -129,33 +132,36 @@ def get_user_args():
 		),
 		formatter_class = RawTextHelpFormatter
 	)
-	parser.add_argument( "gpx_file",               help = "load route from the given GPX file path", type = str )
+	parser.add_argument( "gpx_files",              help = "load route from the given GPX file path", nargs = "+" )
 	parser.add_argument( "-t", "--poi-types",      help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
-	parser.add_argument( "-o", "--poi-file",       help = "save POIs in GeoJSON format to the given file path (default is your GPX-file path with .geojson extension)", type = str )
 	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (ca. 100 meter because 1 degree of latitude ~111 km)", type = float, default = 0.001 )
 	args = parser.parse_args()
-	
-	if args.poi_file is None:
-		base, ext     = os.path.splitext( args.gpx_file )
-		args.poi_file = base + ".geojson"
 	
 	return args
 
 
 
 def main():
-	args   = get_user_args()
-	points = load_gpx_points( args.gpx_file )
-	tags   = get_poi_tags( args.poi_types )
-	pois   = query_osm_pois( points, args.poi_radius_deg, tags )
+	args = get_user_args()
+	tags = get_poi_tags( args.poi_types )
 	
-	if not pois.empty:
-		gdf_all = pd.concat([ pois ])   # GeoDataFrame
-		gdf_all.to_file( args.poi_file, driver = "GeoJSON" )
-		print( f"[INFO] {len(gdf_all)} points of interest saved to: {args.poi_file}" )
-	else:
-		print( "[WARN] No points of interest found")
-
+	for i, gpx_file in enumerate( args.gpx_files ):
+		print( f"[INFO] Processing GPX file: {gpx_file}" )
+		
+		base, ext = os.path.splitext( gpx_file )
+		poi_file  = base + ".geojson"
+		points    = load_gpx_points( gpx_file )
+		pois      = query_osm_pois( points, args.poi_radius_deg, tags )
+		
+		if not pois.empty:
+			gdf_all = pd.concat([ pois ])   # GeoDataFrame
+			gdf_all.to_file( poi_file, driver = "GeoJSON" )
+			print( f"[INFO] {len(gdf_all)} points of interest saved to: {poi_file}" )
+		else:
+			print( "[WARN] No points of interest found for: {gpx_file}" )
+		
+		if i != len( args.gpx_files ) - 1:
+			time.sleep( OSM_QUERY_DELAY_SECS )
 
 
 if __name__ == "__main__":
