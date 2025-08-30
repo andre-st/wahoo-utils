@@ -125,7 +125,7 @@ def get_user_args():
 		),
 		epilog = (
 			"Examples:\n"
-			"  ./gpx2poi.py --poi-types=water,food  your_route.gpx\n"
+			"  ./gpx2poi.py --poi-types=water,food  routes/*.gpx\n"
 			"\n"
 			"License:\n"
 			"   MIT License"
