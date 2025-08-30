@@ -24,10 +24,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 - Getting POIs onto the Bolt:  
 	`Poi2db` adds these features as POIs to the Boltâ€™s "Save my location" table on the device.
 	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
-	`Poi2db` always recreates the entire auto-POIs list from scratch!
-	To do this, it reads one or more GeoJSON files produced by `gpx2poi`.
-	Use program option `--delete` to remove all auto-POIs without adding new ones. 
-	Manual POIs are never affected.
+	Manual POIs are not affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
 		(tested on 60 km tours; usually recommended to _split_ long distances for overview and smoother re-routing on a bike computer)
@@ -47,10 +44,10 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		$                # requires Linux, Python 3 with pip
 		$ ./gpx2poi.py --help
 		$ ./poi2db.py  --help
-		$                # download GPX files to "routes"-directory
-		$                # enable Bolt's debug mode and connect USB cable
-		$ ./gpx2poi.py routes/*.gpx      # Writes POIs for all GPX tracks to geojson-Files
-		$ ./poi2db.py  routes/*.geojson  # Adds all POIs to the Bolt
+		$                # 1. download GPX files to "routes"-directory
+		$                # 2. enable Bolt's debug mode and connect USB cable
+		$ ./gpx2poi.py routes/*.gpx      # Writes POIs for all GPX tracks to geojson-files
+		$ ./poi2db.py  routes/*.geojson  # Adds POIs for all tracks to the Bolt
 	```
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
