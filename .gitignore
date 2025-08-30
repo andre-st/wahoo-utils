@@ -6,5 +6,6 @@
 BoltApp.sqlite
 local
 cache
+routes
 .obsolete
 
