@@ -43,7 +43,7 @@ def get_user_args():
 	parser = argparse.ArgumentParser(
 		description = (
 			"Adds points of interest from a GeoJSON file to a BoltApp SQLite database\n\n"
-			"Author: https://github.com/andre-st/wahoo-utils/" 
+			"Author: https://github.com/andre-st/" 
 		),
 		epilog = (
 			"Examples:\n"
