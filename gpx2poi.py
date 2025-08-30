@@ -118,7 +118,7 @@ def get_user_args():
 	parser = argparse.ArgumentParser(
 		description = (
 			"Queries OpenStreetMap for points of interest (POI) within a given radius along your route and writes them to a GeoJSON file\n\n"
-			"Author: https://github.com/andre-st/wahoo/" 
+			"Author: https://github.com/andre-st/wahoo-utils/" 
 		),
 		epilog = (
 			"Examples:\n"

@@ -1,4 +1,4 @@
-# Wahoo Elemnt Bolt v2 Playground
+# Wahoo Elemnt Bolt v2 Utils
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
 
@@ -35,6 +35,7 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	- heart-icon only for different POI types; maybe "poiType" in the database table selects icon? perhaps reversing BoltApp could give answers
 	- better restrict POI types to food/water -or- shelter, at the moment
 	- extra step: when updating routes in Komoot etc, you have to copy them to this project too and rebuild the POI list
+	- no POIs when detouring
 - Other Approaches:
 	- native function on the device: "Save my location" = no manual coordinates
 	- adding POIs manually via smartphone companion app = pain
@@ -58,6 +59,7 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 				<Notes>Water!</Notes> 
 			</CoursePoint>
 			```
+	- navigate to POIs with your smartphone when hungry/thirsty
 
 
 ## Basics
