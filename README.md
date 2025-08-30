@@ -23,7 +23,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
 - Getting POIs onto the Bolt:  
 	`Poi2db` adds these features as POIs to the Boltâ€™s "Save my location" table on the device.
-	The SQLite database file is accessible via Android Debug Bridge `--adb` (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
+	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
 	`Poi2db` always recreates the entire auto-POIs list from scratch!
 	To do this, it reads one or more GeoJSON files produced by `gpx2poi`.
 	Use program parameter `--delete` to remove all auto-POIs without adding new ones. 
@@ -41,11 +41,17 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		so the heart icon meaning is predictable
 	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
 	- no auto-POIs available when detouring
-- Requires:
-	- Linux
-	- Python 3 (with pip)
-	- USB data cable connecting Bolt
-	- `setup.sh` downloads all dependencies  (ADB, python-libs, ...) to the project's subdirectory `local`, so your system stays clean after deletion
+- Installation:
+	- requires: Linux, Python 3 (with pip), USB data cable connecting Bolt
+	- ```sh
+		$ ./setup.sh     # installs dependencies (ADB, python-libs, ...) to the project's subdirectory 'local', so your system stays clean
+		$ ./gpx2poi.py --help
+		$ ./poi2db.py  --help
+		$                # download GPX files to ./routes
+		$                # enable Bolt's debug mode and connect USB cable
+		$ ./gpx2poi.py routes/*.gpx         # Get POIs for all GPX tracks
+		$ ./poi2db.py  routes/*.geojson     # Add all POIs to the Bolt
+		```
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain
 	- **self generated maps** with POI-symbols = best approach but nasty setup and 

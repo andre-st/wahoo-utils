@@ -42,31 +42,27 @@ def cue_title( props ):
 def get_user_args():
 	parser = argparse.ArgumentParser(
 		description = (
-			"Adds points of interest from a GeoJSON file to a BoltApp SQLite database\n\n"
+			"Adds points of interest from one or more GeoJSON files to the Wahoo Bolt v2 bike computer\n\n"
 			"Author: https://github.com/andre-st/" 
 		),
 		epilog = (
 			"Examples:\n"
 			"  ./poi2db.py route1.geojson route2.geojson route3.geojson \n"
-			"  ./poi2db.py --adb  routes/*.geojson\n"
-			"  ./poi2db.py --db_file=BoltAppTest.sqlite --delete\n"
+			"  ./poi2db.py routes/*.geojson\n"
+			"  ./poi2db.py --db_file=LocalBoltApp.sqlite --delete\n"
 			"\n"
 			"License:\n"
 			"  MIT License"
 		),
 		formatter_class = RawTextHelpFormatter
 	)
-	parser.add_argument( "poi_files",        help =  "rebuild POI database entirely from scratch from the given list of GeoJSON files", nargs = "*" )
-	parser.add_argument( "-d", "--delete",   help =  "delete old POIs from database only; only required when there are no POI files", action = "store_true" )
-	parser.add_argument( "-a", "--adb",      help =  "directly update database on bike computer via ADB instead of a local database file", action = "store_true" )
-	parser.add_argument( "-o", "--db_file",  help = f"path to SQLite database. Defaults to '{ADB_DB_FILENAME}' (ignored if --adb)",  type = str )
+	parser.add_argument( "poi_files",        help = "rebuild POI database entirely from scratch from the given list of GeoJSON files (manual POIs are not affected)", nargs = "*" )
+	parser.add_argument( "-d", "--delete",   help = "delete old POIs from database only; only required when there are no POI files", action = "store_true" )
+	parser.add_argument( "-i", "--db_file",  help = "load the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB)", type = str )
 	args = parser.parse_args()
 	
 	if not args.delete and not args.poi_files:
 		parser.error( "Missing POI file argument. See --help parameter.")
-	
-	if args.db_file is None:
-		args.db_file = ADB_DB_FILENAME
 	
 	return args
 
@@ -81,8 +77,7 @@ def main():
 	#
 	#  Get bike computer BoltApp database
 	#
-	
-	if( args.adb ):
+	if( not args.db_file ):
 		tmpfname     = "poi2db_" + next( tempfile._get_candidate_names() ) + ".sqlite"
 		tmpfpath     = os.path.join( tempfile.gettempdir(), tmpfname )
 		args.db_file = tmpfpath
@@ -90,14 +85,12 @@ def main():
 		subprocess.run([ "local/opt/platform-tools/adb", "start-server" ], check = True )  # or exception  TODO fixed string
 		adb_device   = adbutils.adb.device()                             # First device, or exception
 		adb_device.sync.pull( ADB_DB_DIR + "/" + ADB_DB_FILENAME, args.db_file )  # or exception
-
+	
 	
 	##########################################################################
 	#
-	#  Update local BoltApp database
+	#  Update (temporary) local BoltApp database
 	#
-	
-	
 	db_conn   = sqlite3.connect( args.db_file )
 	db_cursor = db_conn.cursor()
 	
@@ -155,7 +148,6 @@ def main():
 	# 
 	#  Update bike computer database via ADB
 	#
-	
 	if( adb_device ):
 		# Upload new and rename = filehandle of the running app still points to the old data;
 		# delete wal/shm journal files otherwise it will overwrite our data after reboot
