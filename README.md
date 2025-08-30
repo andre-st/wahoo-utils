@@ -17,7 +17,7 @@
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
-- Finding POIs within a 100-meter `--poi-radius-deg` along the route:  
+- Finding `--poi-types=water,food` within a 100-meter `--poi-radius-deg` along the route:  
 	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file [downloaded from Komoot](https://github.com/pieterclaerhout/export-komoot) or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
@@ -34,7 +34,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs aren�
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types aren’t visually distinguished. 
 		(Setting poiType to 1 instead of 0 in the database has no effect. Reversing the Bolt app might reveal why)
-	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` &ndash; not both &ndash; 
+	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
 		so the heart icon meaning is predictable
 	- extra step required: when updating routes in Komoot or similar, you must copy them to this project and rebuild the POI list
 	- no auto-POIs available when detouring
