@@ -29,7 +29,8 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	Use program parameter `--delete` to remove all auto-POIs without adding new ones. 
 	Manual POIs are never affected.
 - Pros:
-	- POI generation and updating the Bolt takes only a few seconds (tested on 60 km tours) and uses very little disk space
+	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
+		(tested on 60 km tours; usually recommended to _split_ long distances for overview and smoother re-routing on a bike computer)
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
 - Cons / Known issues:
