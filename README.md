@@ -13,7 +13,7 @@
 	not translated into English at all points.
 
 
-## Auto-generated POIs with gpx2poi & poi2db
+## Auto-generated Points of Interest with gpx2poi & poi2db
 
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
 (my Bolt with a rubber protective cover)
@@ -28,7 +28,7 @@ Without POIs a distance/bikepacking cyclist might miss nearby food/water.
 	Poi2db adds these POIs to Bolt's "Save my location" table on the device. 
 	The sqlite database file is accessible via Android Debug Bridge ADB (credit to [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).
 	Auto-generated POIs are stored with a magic number in the POI textual address field, so we can tell apart manual POIs from generated POIs.
-	Poi2db always recreates the auto POIs list from scratch given a list of geojson-files.
+	Poi2db always recreates the entire auto-POIs list from scratch given a list of geojson-files.
 	Program parameter `--delete` removes all auto-POIs without adding new ones.
 - Requires:
 	- Linux
