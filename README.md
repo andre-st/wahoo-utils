@@ -17,7 +17,7 @@
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
-- Finding `--poi-types=water,food` within a 100-meter `--poi-radius-deg` along the route:  
+- Finding `--poi-types=water,food` within a 100-meter `--poi-radius` along your route:  
 	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file [downloaded from Komoot](https://github.com/pieterclaerhout/export-komoot) or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 

@@ -132,9 +132,9 @@ def get_user_args():
 		),
 		formatter_class = RawTextHelpFormatter
 	)
-	parser.add_argument( "gpx_files",              help = "load route from the given GPX file path", nargs = "+" )
-	parser.add_argument( "-t", "--poi-types",      help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
-	parser.add_argument( "-r", "--poi-radius-deg", help = "max. distance of a POI to your route, defaults to 0.001 (ca. 100 meter because 1 degree of latitude ~111 km)", type = float, default = 0.001 )
+	parser.add_argument( "gpx_files",          help = "load route from the given GPX file path", nargs = "+" )
+	parser.add_argument( "-t", "--poi-types",  help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
+	parser.add_argument( "-r", "--poi-radius", help = "max. distance of a POI to your route in meter, defaults to 100", type = int, default = 100 )
 	args = parser.parse_args()
 	
 	return args
@@ -148,10 +148,11 @@ def main():
 	for i, gpx_file in enumerate( args.gpx_files ):
 		print( f"[INFO] Processing GPX file: {gpx_file}" )
 		
-		base, ext = os.path.splitext( gpx_file )
-		poi_file  = base + ".geojson"
-		points    = load_gpx_points( gpx_file )
-		pois      = query_osm_pois( points, args.poi_radius_deg, tags )
+		base, ext  = os.path.splitext( gpx_file )
+		poi_file   = base + ".geojson"
+		points     = load_gpx_points( gpx_file )
+		radius_deg = args.poi_radius / 111320    # 0.001 ~= 100 meter; 1 degree ≈ 111,320 meters everywhere WGS84, near Earth surface
+		pois       = query_osm_pois( points, radius_deg, tags )
 		
 		if not pois.empty:
 			gdf_all = pd.concat([ pois ])   # GeoDataFrame
