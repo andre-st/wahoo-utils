@@ -21,13 +21,14 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
+	I test results with `poi2tcx` and [a TCX viewer](https://www.gpsvisualizer.com/) 
 - Getting POIs onto the Bolt:  
 	`Poi2db` adds these features as POIs to the Boltâ€™s "Save my location" table on the device.
 	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
 	Manual POIs are not affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
-		(tested on 60 km tours; usually recommended to split long distances for overview and smoother re-routing on a bike computer)
+		(tested on 60 km tours; usually recommended to split long distances for smoother re-routing on a bike computer)
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
 	- POI visibility independent of the zoom level
@@ -60,7 +61,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- https://github.com/vti/wahooMapsCreator-docker (!)
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX food and water icons showed up in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
+		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX food and water icons showed up in GPSVisualizer only)
 		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
