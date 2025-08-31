@@ -140,7 +140,7 @@ def get_user_args():
 	)
 	parser.add_argument( "gpx_files",          help = "load route from the given GPX file path", nargs = "+" )
 	parser.add_argument( "-t", "--poi-types",  help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
-	parser.add_argument( "-r", "--poi-radius", help = "max. distance of a POI to your route in meter, defaults to 100", type = int, default = 100 )
+	parser.add_argument( "-r", "--poi-radius", help = "max. distance of a POI to your route in meter, defaults to 500", type = int, default = 500 )
 	args = parser.parse_args()
 	
 	return args

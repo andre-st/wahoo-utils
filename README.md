@@ -17,7 +17,7 @@
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ€™t marked on their map.
 
-- Finding `--poi-types=water,food` within a 100-meter `--poi-radius` along your route:  
+- Finding `--poi-types=water,food` within a 500-meter `--poi-radius` along your route:  
 	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
@@ -57,7 +57,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		regular generation requires significant time and disk space
 		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
-		- https://github.com/vti/wahooMapsCreator-docker
+		- https://github.com/vti/wahooMapsCreator-docker (!)
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
 		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX food and water icons showed up in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
