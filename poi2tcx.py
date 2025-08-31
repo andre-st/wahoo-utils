@@ -37,7 +37,8 @@ def cue_title( props ):
 	
 	title = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
 	title = title.rstrip();
-	return title
+	
+	return title or "POI"
 
 
 
