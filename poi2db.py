@@ -28,15 +28,17 @@ ADB_DB_FILENAME = "BoltApp.sqlite"
 def cue_title( props ):
 	name    = props.get( "name"    ) or ""
 	amenity = props.get( "amenity" ) or ""
+	shop    = props.get( "shop"    ) or ""
 	
 	if amenity:
-		amenity = amenity.replace( '_', ' ' )       # "fast_food" -> "fast food"
-		amenity = amenity[0].upper() + amenity[1:]  # "toilets"   -> "Toilets" 
+		amenity = amenity.replace( '_', ' ' )  # "fast_food" -> "fast food"
+		amenity = amenity.capitalize()         # "toilets"   -> "Toilets" 
 	
 	title = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
 	title = title.rstrip();
+	title = title or shop.capitalize() or "POI"
 	
-	return title or "POI"
+	return title
 
 
 

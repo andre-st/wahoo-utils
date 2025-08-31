@@ -30,15 +30,17 @@ TAGS_FIRSTAID = { "shelter", "camp_site", "camp_pitch" }
 def cue_title( props ):
 	name    = props.get( "name"    ) or ""
 	amenity = props.get( "amenity" ) or ""
+	shop    = props.get( "shop"    ) or ""
 	
 	if amenity:
-		amenity = amenity.replace( '_', ' ' )       # "fast_food" -> "fast food"
-		amenity = amenity[0].upper() + amenity[1:]  # "toilets"   -> "Toilets" 
+		amenity = amenity.replace( '_', ' ' )   # "fast_food" -> "fast food"
+		amenity = amenity.title()               # "fast food" -> "Fast Food"
 	
 	title = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
 	title = title.rstrip();
+	title = title or shop.title() or "POI"
 	
-	return title or "POI"
+	return title
 
 
 
