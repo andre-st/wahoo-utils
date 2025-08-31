@@ -39,7 +39,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		so the heart icon meaning is predictable
 	- extra step required: when updating routes in Komoot or similar, you must [copy them](https://github.com/pieterclaerhout/export-komoot)
 		to this project and rebuild the POI list
-	- no auto-POIs available when detouring (depending on the POI radius)
+	- no auto-POIs available when detouring (outside the specified POI radius)
 - Installation:
 	```sh
 		$ ./setup.sh     # installs ADB, python-libs etc to the project's subdir 'local', so your system stays clean
@@ -57,9 +57,10 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		regular generation requires significant time and disk space
 		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
+		- https://github.com/vti/wahooMapsCreator-docker
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX icons shown in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
+		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX food and water icons showed up in [GPSVisualizer](https://www.gpsvisualizer.com/) only)
 		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
