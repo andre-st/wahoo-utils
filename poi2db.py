@@ -34,12 +34,12 @@ def cue_title( props ):
 	shop    = props.get( "shop"    ) or ""
 	
 	if amenity:
-		amenity = amenity.replace( '_', ' ' )  # "fast_food" -> "fast food"
-		amenity = amenity.capitalize()         # "toilets"   -> "Toilets" 
+		amenity = amenity.replace( '_', ' ' )   # "fast_food" -> "fast food"
+		amenity = amenity.title()               # "fast food" -> "Fast Food"
 	
 	title = name if name.startswith( amenity ) else amenity + " " + name;  # "Cafe Cafe Schulze"
 	title = title.rstrip();
-	title = title or shop.capitalize() or "POI"
+	title = title or shop.title() or "POI"
 	
 	return title
 
