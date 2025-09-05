@@ -13,7 +13,7 @@
 ## Auto-generated Points of Interest with gpx2poi & poi2db
 
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
-(my Bolt with a rubber protective cover: low zoom level of the entire island of Bornholm plus street-level view as if riding)
+_(my Bolt with a rubber protective cover: low zoom level of the entire island of Bornholm plus street-level view as if riding)_
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ€™t marked on their map.
 
@@ -39,8 +39,9 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		(Setting poiType to 1 instead of 0 in the database has no effect. Reversing the Bolt app might reveal why)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
 		so the heart icon meaning is more predictable (still you cannot tell a restaurant apart from a fuel station); 
-		I've excluded bars/pubs from `food` because of bike safety, you might want to re-add it.
-	- extra step required: when updating routes in Komoot or similar, you must [copy them](https://github.com/pieterclaerhout/export-komoot)
+		I've excluded bars/pubs from `water` because of bike safety, you might want to re-add it.
+	- extra step required: when updating routes in Komoot or similar, 
+		you must [copy them](https://github.com/pieterclaerhout/export-komoot) 
 		to this project and rebuild the POI list
 	- no auto-POIs available when detouring (outside the specified POI radius)
 	- at low zoom levels, too many POIs can clutter the map, though this isnâ€™t an issue at street level. 
@@ -69,7 +70,8 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- https://github.com/vti/wahooMapsCreator-docker (!)
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
 	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; TCX food and water icons showed up in GPSVisualizer only)
+		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; 
+			TCX food and water icons showed up in GPSVisualizer only)
 		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
 		- RwGPS premium feature? $$$
 		- ```xml
