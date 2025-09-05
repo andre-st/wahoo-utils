@@ -13,7 +13,7 @@
 ## Auto-generated Points of Interest with gpx2poi & poi2db
 
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
-(my Bolt with a rubber protective cover)
+(my Bolt with a rubber protective cover: low zoom level of the entire island of Bornholm plus street-level view as if riding)
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
@@ -28,19 +28,27 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs aren�
 	Manual POIs are not affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
-		(tested on 60 km tours; usually recommended to split long distances for smoother re-routing on a bike computer)
+		(tested in real life with 60 km tours; 
+		usually recommended to split long distances for smoother re-routing on a bike computer)
+	- POI visibility is independent of the zoom level
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
-	- POI visibility independent of the zoom level
 - Cons / Known issues:
 	- the Bolt uses a single heart icon for all POI types, 
 		so different types aren’t visually distinguished. 
 		(Setting poiType to 1 instead of 0 in the database has no effect. Reversing the Bolt app might reveal why)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
-		so the heart icon meaning is predictable
+		so the heart icon meaning is more predictable (still you cannot tell a restaurant apart from a fuel station); 
+		I've excluded bars/pubs from `food` because of bike safety, you might want to re-add it.
 	- extra step required: when updating routes in Komoot or similar, you must [copy them](https://github.com/pieterclaerhout/export-komoot)
 		to this project and rebuild the POI list
 	- no auto-POIs available when detouring (outside the specified POI radius)
+	- at low zoom levels, too many POIs can clutter the map, though this isn’t an issue at street level. 
+		Not sure if Bolt allows you to hide all POIs.
+	- manual POIs added before auto-generation get buried under hundreds of auto-POIs. 
+		However, manual ‘save-my-location’ POIs added during rides 
+		(e.g., ‘bring me back to this tent pitch after checking out the city for food’) 
+		appear at the top and are easy to find.
 - Installation:
 	```sh
 		$ ./setup.sh     # installs ADB, python-libs etc to the project's subdir 'local', so your system stays clean
@@ -49,7 +57,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs aren�
 		$ ./poi2db.py  --help
 		$                # 1. download _selected_ GPX files to "routes"-directory
 		$                # 2. enable Bolt's debug mode and connect USB cable
-		$ ./gpx2poi.py routes/*.gpx      # Saves POIs for all GPX tracks in local geojson-files
+		$ ./gpx2poi.py routes/*.gpx      # Saves POIs for all GPX tracks to local geojson-files
 		$ ./poi2db.py  routes/*.geojson  # Recreates POI-list on the Bolt
 	```
 - Other approaches:
