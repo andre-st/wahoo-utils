@@ -13,15 +13,15 @@ import os
 import tempfile
 from   time import time
 
-# Drittanbieter:
+# Third party:
 import adbutils
 import sqlite3
 import pygeohash as pgh
 
-# Eigene:
+# Own:
 
 
-# Feste Programmkonfiguration:
+# Static program configuration:
 PROG_ID         = "[poi2db]"  # Magic number to identify database rows added by this program
 ADB_DB_DIR      = "/data/data/com.wahoofitness.bolt/databases"
 ADB_DB_FILENAME = "BoltApp.sqlite"
@@ -89,8 +89,8 @@ def main():
 		args.db_file = tmpfpath
 		print( f"[INFO] ADB: Copying database from bike computer to '{args.db_file}'" )
 		subprocess.run([ "local/opt/platform-tools/adb", "start-server" ], check = True )  # or exception  TODO fixed string
-		adb_device   = adbutils.adb.device()                             # First device, or exception
-		adb_device.sync.pull( ADB_DB_DIR + "/" + ADB_DB_FILENAME, args.db_file )  # or exception
+		adb_device   = adbutils.adb.device()                                               # First device, or exception
+		adb_device.sync.pull( ADB_DB_DIR + "/" + ADB_DB_FILENAME, args.db_file )           # or exception
 	
 	
 	##########################################################################
@@ -128,7 +128,7 @@ def main():
 				addr     = f"{PROG_ID}"
 				lon, lat = feature["geometry"]["coordinates"][:2]
 				name     = cue_title( props )
-				custom   = bytes.fromhex( "ACED0005737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F400000000000007708000000100000000078" )  # Serialisierte leere Java-HashMap:
+				custom   = bytes.fromhex( "ACED0005737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F400000000000007708000000100000000078" )  # Serialized empty Java HashMap
 				
 				db_cursor.execute((
 						"INSERT INTO CloudPoiDao (address,        custom,        geoHash,      "
