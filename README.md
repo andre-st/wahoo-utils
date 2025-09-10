@@ -7,13 +7,13 @@
 
 1. The programs and information provided here are not official Wahoo products; this is a private, non-commercial project.
 2. Use at your own risk: It may void your warranty, damage your device, or cause unexpected issues.
-3. The programs have not been tested in all environments and are not specifically optimized or fault-tolerant.
+3. The programs have not been tested in all environments and are not specifically fault-tolerant.
 
 
 ## Auto-generated Points of Interest with gpx2poi & poi2db
 
 ![Automated POIs on a Wahoo Bolt bike computer](poi2db.jpg)  
-_(my Bolt with a rubber protective cover: low zoom level of the entire island of Bornholm plus street-level view as if riding)_
+_Fig: my Bolt (w/ rubber protective cover): low zoom level of the entire island of Bornholm (588 kmÂ²) plus street-level view as if riding_
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ€™t marked on their map.
 
@@ -33,12 +33,13 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	- POI visibility is independent of the zoom level
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
+	- easy installation (probably)
 - Cons / Known issues:
-	- the Bolt uses a single heart icon for all POI types, 
+	- the Bolt uses &hearts; for all POI types, 
 		so different types arenâ€™t visually distinguished. 
-		(Setting poiType to 1 instead of 0 in the database has no effect. Reversing the Bolt app might reveal why)
+		(Setting poiType in the database had no effect. Reversing the Bolt app might reveal why)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
-		so the heart icon meaning is more predictable (still you cannot tell a restaurant apart from a fuel station); 
+		so the meaning of &hearts; is more predictable (still you cannot tell a restaurant apart from a fuel station); 
 		I've excluded bars/pubs from `water` because of bike safety, you might want to re-add it.
 	- extra step required: when updating routes in Komoot or similar, 
 		you must [copy them](https://github.com/pieterclaerhout/export-komoot) 
@@ -62,9 +63,9 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		$ ./poi2db.py  routes/*.geojson  # Recreates POI-list on the Bolt
 	```
 - Other approaches:
-	- adding POIs manually via smartphone companion app = pain
-	- **self generated maps** with POI-symbols = best approach but nasty setup and 
-		regular generation requires significant time and disk space
+	- adding POIs manually via smartphone companion app = pain, only works for a few selected points
+	- **self generated maps** with POI-symbols = best approach but nasty setup without a container and 
+		regular generation requires significant time and some GB disk space
 		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
 		- https://github.com/vti/wahooMapsCreator-docker (!)
@@ -82,7 +83,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 					<LatitudeDegrees>x.xxxx</LatitudeDegrees> 
 					<LongitudeDegrees>y.yyyy</LongitudeDegrees> 
 				</Position> 
-				<PointType>Water</PointType>   <!-- or: Food, Danger -->
+				<PointType>Water</PointType>   <!-- Water, Food, Danger -->
 				<Notes>Water!</Notes> 
 			</CoursePoint>
 			```
@@ -100,7 +101,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	1. power up without USB-Cable plugged in, 
 	2. press POWER+UP+DOWN simultan. (1 or 2 times)
 	3. plug in cable
-	4. check with `adb devices`
+	4. check with `./local/opt/platform-tools/adb devices`
 - Bolt supports file formats: 
 	- FIT (newer Garmin binary with smaller filesize), annoyingly requires Garmin FIT SDK
 	- TCX (older easy Garmin plaintext XML)
