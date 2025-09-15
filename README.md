@@ -33,7 +33,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	- POI visibility is independent of the zoom level
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
-	- easy installation (probably)
+	- easy installation (probably), zero configuration and hardly any RTFM
 - Cons / Known issues:
 	- the Bolt uses &hearts; for all POI types, 
 		so different types arenâ€™t visually distinguished. 
@@ -67,38 +67,17 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	- adding POIs manually via smartphone companion app = pain, only works for a few selected points
 	- **self generated maps** with POI-symbols = best approach but nasty setup without a container and 
 		regular generation requires some time and disk space (Germany w/o neighb.: 2 hours, 13 GB)
-		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
 		- https://github.com/vti/wahooMapsCreator-docker (!)
+		- https://github.com/vti/elemntary   (user friendly maps upload)
+		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-	- custom navigation cues in FIT, TCX, GPX files may give a text warning when approaching the point + water tap icon  
+	- custom navigation cues in FIT, TCX (`<CursePoint>`), GPX (`<wpt>` waypoints) files may give a text warning when approaching the point + water tap icon  
 		- I could not detect any icon with FIT or TCX on my Bolt in non-riding route-map overview mode, GPX not tested iirc
 			(TCX food and water icons showed up in GPSVisualizer)
 		- Q: Are icons just visible on the Bolt when actually riding in proximity/small radius? (poi2db isn't limited)
 		- online-tool to enrich GPX track with waypoints (tested with Garmin): https://waypoints.sippsolutions.de/  
-			```xml
-			<wpt lat="x.xxxx" lon="y.yyyy">  <!-- GPX files -->
-				<ele>zzz.z</ele>
-				<time>2025-09-15T12:00:00Z</time>
-				<name>...</name>
-				<desc>...</desc>
-				<sym>Flag, Blue</sym>
-				<type>POI</type>
-			</wpt>
-			```
 		- RwGPS premium feature? $$$
-		- ```xml
-			<CoursePoint>  <!-- TCX files -->
-				<Name>Water</Name> 
-				<Time>2023-10-19T17:13:09Z</Time> 
-				<Position> 
-					<LatitudeDegrees>x.xxxx</LatitudeDegrees> 
-					<LongitudeDegrees>y.yyyy</LongitudeDegrees> 
-				</Position> 
-				<PointType>Water</PointType>   <!-- Water, Food, Danger -->
-				<Notes>Water!</Notes> 
-			</CoursePoint>
-			```
 	- navigate to POIs with your smartphone when hungry/thirsty = increased battery usage; 
 		needs mounting options on the handlebar; increased risk of damage
 
@@ -111,9 +90,9 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	(though some security/privacy risk)
 - Bolt authorizes ADB in debug mode:
 	1. power up without USB-Cable plugged in, 
-	2. press POWER+UP+DOWN simultan. (1 or 2 times)
+	2. press POWER+UP+DOWN simultan. (2 times)
 	3. plug in cable
-	4. check with `./local/opt/platform-tools/adb devices`
+	4. check with `./local/opt/platform-tools/adb devices`  (remove cable and repeat 2. if 'unauthorized')
 - Bolt supports file formats: 
 	- FIT (newer Garmin binary with smaller filesize), annoyingly requires Garmin FIT SDK
 	- TCX (older easy Garmin plaintext XML)
