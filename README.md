@@ -70,14 +70,24 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- https://github.com/treee111/wahooMapsCreator
 		- https://github.com/vti/wahooMapsCreator-docker (!)
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-	- custom navigation cues in FIT or TCX (not GPX) files will give a text warning when approaching the point + water tap icon  
-		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; 
-			TCX food and water icons showed up in GPSVisualizer only)
-		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
-		- online-tool to enrich GPX track with waypoints: https://waypoints.sippsolutions.de/
+	- custom navigation cues in FIT, TCX, GPX files may give a text warning when approaching the point + water tap icon  
+		- I could not detect any icon with FIT or TCX on my Bolt in non-riding route-map overview mode, GPX not tested iirc
+			(TCX food and water icons showed up in GPSVisualizer)
+		- Q: Are icons just visible on the Bolt when actually riding in proximity/small radius? (poi2db isn't limited)
+		- online-tool to enrich GPX track with waypoints: https://waypoints.sippsolutions.de/  
+			```xml
+			<wpt lat="x.xxxx" lon="y.yyyy">  <!-- GPX files -->
+				<ele>zzz.z</ele>
+				<time>2025-09-15T12:00:00Z</time>
+				<name>...</name>
+				<desc>...</desc>
+				<sym>Flag, Blue</sym>
+				<type>POI</type>
+			</wpt>
+			```
 		- RwGPS premium feature? $$$
 		- ```xml
-			<CoursePoint> 
+			<CoursePoint>  <!-- TCX files -->
 				<Name>Water</Name> 
 				<Time>2023-10-19T17:13:09Z</Time> 
 				<Position> 
