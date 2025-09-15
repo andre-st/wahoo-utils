@@ -28,7 +28,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 	Manual POIs are not affected.
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
-		(tested in real life with 60 km tours; 
+		(tested in real life with several 60 km tours; 
 		usually recommended to split long distances for smoother re-routing on a bike computer)
 	- POI visibility is independent of the zoom level
 	- no additional POI-capable device is required
@@ -65,7 +65,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 - Other approaches:
 	- adding POIs manually via smartphone companion app = pain, only works for a few selected points
 	- **self generated maps** with POI-symbols = best approach but nasty setup without a container and 
-		regular generation requires significant time and some GB disk space
+		regular generation requires some time and disk space (Germany w/o neighb.: 2 hours, 13 GB)
 		- https://github.com/yokuha/Wahoo-maps
 		- https://github.com/treee111/wahooMapsCreator
 		- https://github.com/vti/wahooMapsCreator-docker (!)
@@ -74,6 +74,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- I could **neither** reproduce that with FIT nor TCX on my Bolt (in non-riding route-map overview mode; 
 			TCX food and water icons showed up in GPSVisualizer only)
 		- afaik Wahoo shows icons only within a pretty small radius along the route (poi2db isn't limited)
+		- online-tool to enrich GPX track with waypoints: https://waypoints.sippsolutions.de/
 		- RwGPS premium feature? $$$
 		- ```xml
 			<CoursePoint> 
