@@ -37,7 +37,8 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 - Cons / Known issues:
 	- the Bolt uses &hearts; for all POI types, 
 		so different types arenâ€™t visually distinguished. 
-		(Setting poiType in the database had no effect. Reversing the Bolt app might reveal why)
+		(_poiType_ in the database seems either 0=SAVED_LOCATION or 1=PREVIOUS_SEARCH or n>1 UNKNOWN_\$n, that is app logic / not problem domain; 
+			too, the resource directory _with the &hearts; icon_ 'map_poi_\{color,light\}.webp' does not contain any other POI icon)
 	- currently, it's better to restrict to either `--poi-types=food,water` or `--poi-types=camp` for example &ndash; not both &ndash; 
 		so the meaning of &hearts; is more predictable (still you cannot tell a restaurant apart from a fuel station); 
 		I've excluded bars/pubs from `water` because of bike safety, you might want to re-add it.
@@ -74,7 +75,7 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs arenâ
 		- I could not detect any icon with FIT or TCX on my Bolt in non-riding route-map overview mode, GPX not tested iirc
 			(TCX food and water icons showed up in GPSVisualizer)
 		- Q: Are icons just visible on the Bolt when actually riding in proximity/small radius? (poi2db isn't limited)
-		- online-tool to enrich GPX track with waypoints: https://waypoints.sippsolutions.de/  
+		- online-tool to enrich GPX track with waypoints (tested with Garmin): https://waypoints.sippsolutions.de/  
 			```xml
 			<wpt lat="x.xxxx" lon="y.yyyy">  <!-- GPX files -->
 				<ele>zzz.z</ele>
