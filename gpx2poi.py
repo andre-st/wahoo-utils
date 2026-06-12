@@ -164,7 +164,7 @@ def main():
 			gdf_all.to_file( poi_file, driver = "GeoJSON" )
 			print( f"[INFO] {len(gdf_all)} points of interest saved to: {poi_file}" )
 		else:
-			print( "[WARN] No points of interest found for: {gpx_file}" )
+			print( f"[WARN] No points of interest found for: {gpx_file}" )
 		
 		if i != len( args.gpx_files ) - 1:
 			time.sleep( OSM_QUERY_DELAY_SECS )
