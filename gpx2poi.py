@@ -18,6 +18,7 @@ from   argparse import RawTextHelpFormatter
 import math
 import os
 import time
+import glob
 
 # Drittanbieter:
 import geopandas as gpd
@@ -51,9 +52,10 @@ POI_TYPES_TAGS = {
 	# "repair":   radwerkstatt
 	# "firstaid": apotheken
 }
-
 OSM_QUERY_DELAY_SECS = 2
-
+DEFAULT_GPX_PATTERN  = "./routes/*.gpx"
+DEFAULT_POI_TYPES    = "water,food"
+DEFAULT_POI_RADIUS   = 500
 
 
 def get_poi_tags( poi_types ):
@@ -131,6 +133,7 @@ def get_user_args():
 		),
 		epilog = (
 			"Examples:\n"
+			"  ./gpx2poi.py\n"
 			"  ./gpx2poi.py --poi-types=water,food  routes/*.gpx\n"
 			"\n"
 			"License:\n"
@@ -138,11 +141,17 @@ def get_user_args():
 		),
 		formatter_class = RawTextHelpFormatter
 	)
-	parser.add_argument( "gpx_files",          help = "load route from the given GPX file path", nargs = "+" )
-	parser.add_argument( "-t", "--poi-types",  help = "comma-separated list: water,food,camp,toilet. Defaults to water,food", default = "water,food", type=lambda s: s.split( "," ))
-	parser.add_argument( "-r", "--poi-radius", help = "max. distance of a POI to your route in meter, defaults to 500", type = int, default = 500 )
+	parser.add_argument( "gpx_files",          help = f"load route from the given GPX file path, default: {DEFAULT_GPX_PATTERN}", nargs = "*" )
+	parser.add_argument( "-t", "--poi-types",  help = f"comma-separated list: water,food,camp,toilet; default: {DEFAULT_POI_TYPES}",   default = DEFAULT_POI_TYPES,  type=lambda s: s.split( "," ))
+	parser.add_argument( "-r", "--poi-radius", help = f"max. distance of a POI to your route in meter, default: {DEFAULT_POI_RADIUS}", default = DEFAULT_POI_RADIUS, type = int )
 	args = parser.parse_args()
 	
+	if not args.gpx_files:
+		args.gpx_files = glob.glob( DEFAULT_GPX_PATTERN )
+	
+	if not args.gpx_files:
+		print( "[WARN] GPX files missing. Nothing to do. Try --help" )
+
 	return args
 
 
