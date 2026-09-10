@@ -64,7 +64,7 @@ def get_user_args():
 	)
 	parser.add_argument( "poi_files",        help = "rebuild POI database entirely from scratch from the given list of GeoJSON files (manual POIs are not affected)", nargs = "*" )
 	parser.add_argument( "-d", "--delete",   help = "delete old POIs from database only; required when there are no GeoJSON files (manual POIs are not affected)", action = "store_true" )
-	parser.add_argument( "-i", "--db_file",  help = "load/update the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB), no Bolt update", type = str )
+	parser.add_argument( "-i", "--db_file",  help = "load the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB), then update Bolt", type = str )
 	args = parser.parse_args()
 	
 	if not args.delete and not args.poi_files:
