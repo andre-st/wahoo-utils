@@ -76,14 +76,14 @@ def get_user_args():
 
 def wait_for_authorized_device( poll_interval_secs: float = 1.0 ) -> adbutils.AdbDevice:
 	while True:
-		devices = adbutils.adb.list()
-		for info in devices:
+		devices_info = adbutils.adb.list()
+		for info in devices_info:
 			if info.state == "device":
 				return adbutils.adb.device( serial=info.serial )
 			elif info.state == "unauthorized":
-				print( f"[WARN] ADB: Device {info.serial} is plugged in but UNAUTHORIZED. Press 2x POWER+UP+DOWN to enable debug mode", end="\r" )
+				print( f"[WARN] ADB: Device {info.serial} is plugged in but UNAUTHORIZED. Press POWER+UP+DOWN twice on your Bolt device to activate debug mode", end="\r" )
 		
-		if not devices:
+		if not devices_info:
 			print( "[WARN] ADB: Plug in your bike computer now or press CTRL+C to exit", end="\r" )
 		
 		sleep( poll_interval_secs )
@@ -105,7 +105,7 @@ def main():
 		args.db_file = tmpfpath
 		
 		subprocess.run([ "local/opt/platform-tools/adb", "start-server" ], check = True )   # or exception  TODO fixed string
-		adb_device = wait_for_authorized_device()                                           # First device, or exception
+		adb_device = wait_for_authorized_device()
 		
 		print( f"[INFO] ADB: Copying database from bike computer to '{args.db_file}'" )
 		adb_device.sync.pull( ADB_DB_DIR + "/" + ADB_DB_FILENAME, args.db_file )           # or exception
