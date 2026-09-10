@@ -17,20 +17,21 @@ _Fig: my Bolt (w/ rubber protective cover): low zoom level of the entire island 
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
-- Finding `--poi-types=water,food` within `--poi-radius=500` meters along your route:  
+- Finding `--poi-types=water,food` within `--poi-radius=500` meters along `your_route.gpx`:  
 	OpenStreetMap servers can be queried for features within a geographic polygon using the _Overpass API_.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
 	I test results with `poi2tcx` and [a TCX viewer](https://www.gpsvisualizer.com/) 
 - Getting POIs onto the Bolt:  
-	`Poi2db` adds features from `your_route.geojson' as POIs to the Bolt’s "Save my location" table on the device.
-	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
-	Manual POIs are not affected.
+	`Poi2db` adds features from `your_route.geojson` to the Bolt’s "Save my location" list on the device.
+	It gains access to this list (SQLite database file) via the Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
+	Manual POIs are not affected. You can `--delete` all auto-generated POIs from the Bolt, too.  
+	So, the pipeline is: `file.gpx -> gpx2poi -> file.geojson -> poi2db -> Bolt`
 - Pros:
 	- POI generation and updating the Bolt takes only a few seconds and uses very little disk space  
 		(tested in real life with several 60 km tours; 
 		usually recommended to split long distances for smoother re-routing on a bike computer)
-	- POI visibility is independent of the zoom level
+	- POI visibility is independent of the zoom level, useful if you want to look ahead
 	- no additional POI-capable device is required
 	- freely definable POI radius in contrast to navigation cues
 	- easy installation (probably), zero configuration and hardly any RTFM
