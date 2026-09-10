@@ -11,7 +11,7 @@ import subprocess
 from   uuid import uuid4
 import os
 import tempfile
-from   time import time
+from   time import time, sleep
 
 # Third party:
 import adbutils
@@ -64,13 +64,29 @@ def get_user_args():
 	)
 	parser.add_argument( "poi_files",        help = "rebuild POI database entirely from scratch from the given list of GeoJSON files (manual POIs are not affected)", nargs = "*" )
 	parser.add_argument( "-d", "--delete",   help = "delete old POIs from database only; required when there are no GeoJSON files (manual POIs are not affected)", action = "store_true" )
-	parser.add_argument( "-i", "--db_file",  help = "load the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB)", type = str )
+	parser.add_argument( "-i", "--db_file",  help = "load/update the BoltApp.sqlite database from this computer rather than from the Bolt device (ADB), no Bolt update", type = str )
 	args = parser.parse_args()
 	
 	if not args.delete and not args.poi_files:
 		parser.error( "Missing POI file argument. See --help parameter.")
 	
 	return args
+
+
+
+def wait_for_authorized_device( poll_interval_secs: float = 1.0 ) -> adbutils.AdbDevice:
+	while True:
+		devices = adbutils.adb.list()
+		for info in devices:
+			if info.state == "device":
+				return adbutils.adb.device( serial=info.serial )
+			elif info.state == "unauthorized":
+				print( f"[WARN] ADB: Device {info.serial} is plugged in but UNAUTHORIZED. Press 2x POWER+UP+DOWN to enable debug mode", end="\r" )
+		
+		if not devices:
+			print( "[WARN] ADB: Plug in your bike computer now or press CTRL+C to exit", end="\r" )
+		
+		sleep( poll_interval_secs )
 
 
 
@@ -87,9 +103,11 @@ def main():
 		tmpfname     = "poi2db_" + next( tempfile._get_candidate_names() ) + ".sqlite"
 		tmpfpath     = os.path.join( tempfile.gettempdir(), tmpfname )
 		args.db_file = tmpfpath
+		
+		subprocess.run([ "local/opt/platform-tools/adb", "start-server" ], check = True )   # or exception  TODO fixed string
+		adb_device = wait_for_authorized_device()                                           # First device, or exception
+		
 		print( f"[INFO] ADB: Copying database from bike computer to '{args.db_file}'" )
-		subprocess.run([ "local/opt/platform-tools/adb", "start-server" ], check = True )  # or exception  TODO fixed string
-		adb_device   = adbutils.adb.device()                                               # First device, or exception
 		adb_device.sync.pull( ADB_DB_DIR + "/" + ADB_DB_FILENAME, args.db_file )           # or exception
 	
 	
