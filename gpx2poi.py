@@ -31,12 +31,18 @@ from   shapely.geometry import LineString
 # Eigene:
 
 
-# Feste Programmkonfiguration:
+# Static program configuration:
 POI_TYPES_TAGS = {
 	"water": {  # = i.S.v. Trinkwasser
-		"amenity": [ "fuel", "cafe", "bar", "biergarten", "fast_food", "pub", "ice_cream", "food_court", "bbq", "drinking_water", "water_point", "grave_yard", "marketplace" ],
-		"landuse": [ "cemetery" ],
-		"shop":    [ "supermarket", "coffee", "convenience", "food", "ice_cream", "water" ]
+					# "bar", "pub" = Betrunkene sind ein Sicherheitsrisiko fuers Rad, schlechte Umgebung
+					# "biergarten" ist meist offene Flaeche, man bleibt beim Rad
+					# "cinema" oft Verkaufsstand mit Getraenken und Popcorn etc, aber schlechte Umgebung fuer Radsicherheit
+					# "hospital" oft Verkauf an Krankenbesucher
+					# "internet_cafe" kleiner Verkauf an Gaeste
+		"amenity":  [ "fuel", "cafe", "biergarten", "fast_food", "ice_cream", "cinema", "food_court", "bbq", "drinking_water", "water_point", "grave_yard", "marketplace", "hospital", "shower", "internet_cafe", "kitchen" ],
+		"landuse":  [ "cemetery" ],
+		"building": [ "church", "kiosk", "supermarket" ],
+		"shop":     [ "supermarket", "coffee", "convenience", "food", "ice_cream", "water" ]
 	},
 	"food": {
 		"amenity": [ "fuel", "restaurant", "cafe", "biergarten", "fast_food", "ice_cream", "food_court", "bbq", "marketplace" ],
