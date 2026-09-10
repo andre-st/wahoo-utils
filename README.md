@@ -1,6 +1,6 @@
 # Wahoo Elemnt Bolt v2 Utils
 
-![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2026.svg)
 
 
 ## Disclaimer
@@ -17,13 +17,13 @@ _Fig: my Bolt (w/ rubber protective cover): low zoom level of the entire island 
 
 A distance or bikepacking cyclist could miss nearby food and water if POIs aren’t marked on their map.
 
-- Finding `--poi-types=water,food` within a 500-meter `--poi-radius` along your route:  
-	OpenStreetMap servers can be queried for features within a geographic polygon using the Overpass API.
+- Finding `--poi-types=water,food` within `--poi-radius=500` meters along your route:  
+	OpenStreetMap servers can be queried for features within a geographic polygon using the _Overpass API_.
 	`Gpx2poi` constructs a simplified polygon (a buffered line) from all route points in a GPX file downloaded from Komoot or similar services.
 	It retrieves hundreds of features within this polygon and writes them to `your_route.geojson`. 
 	I test results with `poi2tcx` and [a TCX viewer](https://www.gpsvisualizer.com/) 
 - Getting POIs onto the Bolt:  
-	`Poi2db` adds these features as POIs to the Bolt’s "Save my location" table on the device.
+	`Poi2db` adds features from `your_route.geojson' as POIs to the Bolt’s "Save my location" table on the device.
 	The SQLite database file is accessible via Android Debug Bridge (credit: [AndroidAndyUK](https://www.youtube.com/watch?v=Sl--gcJ95XM)).  
 	Manual POIs are not affected.
 - Pros:
@@ -69,13 +69,14 @@ A distance or bikepacking cyclist could miss nearby food and water if POIs aren�
 		regular generation requires some time and disk space (Germany w/o neighb.: 2 hours, 13 GB)
 		- https://github.com/treee111/wahooMapsCreator
 		- https://github.com/vti/wahooMapsCreator-docker (!)
+		- [pre-generated maps for upload](https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2YvcyFBZ1E1X1NEQWplTDBlSVVmcmpUQkU4UVdHWmM%5FZT1SckVxQkY&id=F4E28DC020FD3904%21120&cid=F4E28DC020FD3904)
 		- https://github.com/vti/elemntary   (user friendly maps upload)
 		- https://github.com/yokuha/Wahoo-maps
 		- https://www.rennrad-news.de/forum/threads/aktuelles-kartenmaterial-f%C3%BCr-wahoo-elemnt-bolt-roam-elemnt-selbst-generieren.175315/
-	- custom navigation cues in FIT, TCX (`<CursePoint>`), GPX (`<wpt>` waypoints) files may give a text warning when approaching the point + water tap icon  
+	- custom navigation cues in FIT, TCX (`<CoursePoint>`), GPX (`<wpt>` waypoints) files may give a text warning when approaching the point + water tap icon  
 		- I could not detect any icon with FIT or TCX on my Bolt in non-riding route-map overview mode, GPX not tested iirc
-			(TCX food and water icons showed up in GPSVisualizer)
-		- Q: Are icons just visible on the Bolt when actually riding in proximity/small radius? (poi2db isn't limited)
+			- TCX food and water icons showed up in GPSVisualizer
+			- maybe icons are just visible on the Bolt when actually riding in proximity/small radius? (poi2db isn't limited)
 		- online-tool to enrich GPX track with waypoints (tested with Garmin): https://waypoints.sippsolutions.de/  
 		- RwGPS premium feature? $$$
 	- navigate to POIs with your smartphone when hungry/thirsty = increased battery usage; 
